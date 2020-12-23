@@ -13,11 +13,15 @@ import { AppRoutes } from './app.routing';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 
+//BitChandise related page
+import { BitchandiseLandingComponent } from './bitchandise-landing/bitchandise-landing.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    AdminLayoutComponent
+    AdminLayoutComponent,
+    BitchandiseLandingComponent
   ],
   imports: [
     BrowserAnimationsModule,

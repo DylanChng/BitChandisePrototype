@@ -1,0 +1,7 @@
+#landing-bg{
+    /*background-attachment: fixed;
+    background-clip: padding-box;*/
+    background: url("../../assets/img/blockchain-bg-centre.jpg") border-box no-repeat;
+    background-size: 100% auto;
+    height: 100vh;
+}
