@@ -5,3 +5,8 @@
     background-size: 100% auto;
     height: 100vh;
 }
+
+svg {
+    pointer-events: none;
+  }
+  
