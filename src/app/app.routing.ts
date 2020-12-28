@@ -2,15 +2,15 @@ import { Routes } from '@angular/router';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { BitchandiseLandingComponent } from "./bitchandise-landing/bitchandise-landing.component";
-import { TableComponent } from "../app/pages/table/table.component";
+import { LoginComponent } from "./login/login.component";
 
 export const AppRoutes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'landing',
     pathMatch: 'full',
   }, {
-    path: '',
+    path: 'admin',
     component: AdminLayoutComponent,
     children: [
         {
@@ -20,6 +20,10 @@ export const AppRoutes: Routes = [
   {
     path: 'landing',
     component: BitchandiseLandingComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
   },
   {
     path: '**',

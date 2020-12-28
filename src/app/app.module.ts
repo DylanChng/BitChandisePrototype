@@ -2,6 +2,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ToastrModule } from "ngx-toastr";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 
 import { SidebarModule } from './sidebar/sidebar.module';
 import { FooterModule } from './shared/footer/footer.module';
@@ -13,21 +14,28 @@ import { AppRoutes } from './app.routing';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 
+//Angular Material
+import { AngularMaterialModule } from "../app/angular-modules/angular-material.module";
 //BitChandise related page
 import { BitchandiseLandingComponent } from './bitchandise-landing/bitchandise-landing.component';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    BitchandiseLandingComponent
+    BitchandiseLandingComponent,
+    LoginComponent
   ],
   imports: [
     BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(AppRoutes,{
       useHash: true
     }),
+    AngularMaterialModule,
     SidebarModule,
     NavbarModule,
     ToastrModule.forRoot(),

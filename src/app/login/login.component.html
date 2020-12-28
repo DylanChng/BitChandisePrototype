@@ -1,0 +1,34 @@
+<div id="login-bg">
+    <div id="login-box" class="card bg-light">
+        <img src="../../assets/img/logo-mini.png" height="auto" width="200px" class="mx-auto mt-4">
+        <div class="card-body">
+            <h3 class="card-title text-center">Log In</h3>
+            <div class="card-text">
+                <form [formGroup]="loginForm" (ngSubmit)="submitLoginCreds()">
+                    <div class="form-group">
+                        <h6 for="FormControlUsername">Username</h6>
+                        <input type="text" class="form-control" id="FormControlUsername" formControlName="username">
+                    </div>
+                
+                    <div class="form-group">
+                        <h6 for="FormControlPassword">Password</h6>
+                        <div class="input-group">
+                            <input [type]="hide? 'password': 'text'" class="form-control" id="FormControlPassword" formControlName="password">                          
+                            <div class="input-group-prepend m-0 p-0">
+                                <div class="input-group-text m-0 p-0 border-left-0">
+                                    <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-pressed]="hide">
+                                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                    </button>        
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-info btn-block">Log In</button>
+
+                    <p>Can't Login? Please contact the administrator for further enquiries</p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
