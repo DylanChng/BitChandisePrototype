@@ -10,7 +10,7 @@ export const AppRoutes: Routes = [
     redirectTo: 'landing',
     pathMatch: 'full',
   }, {
-    path: 'admin',
+    path: '',
     component: AdminLayoutComponent,
     children: [
         {

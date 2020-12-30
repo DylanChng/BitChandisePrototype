@@ -33,14 +33,14 @@ app.get('/test', (req,res,next) => {
 app.post("/login", (req, res, next) => {
   User.findOne({username: req.body.username})
     .then(user =>{
-      if(!user){
+      if(!user || user.password !== req.body.password){
         return res.status(401).json({
           message: "Login failed"
         })
       }
 
       return res.status(200).json({
-        message: "Login success",
+        message: "Login successful",
         user: user
       })
     })
