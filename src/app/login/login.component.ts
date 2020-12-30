@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormArray, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { AuthService } from 'app/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -8,7 +9,7 @@ import { FormControl, FormGroup, FormArray, FormBuilder, Validators, AbstractCon
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private authService:AuthService) { }
 
   hide = true;
 
@@ -24,8 +25,6 @@ export class LoginComponent implements OnInit {
 
   submitLoginCreds(){
     const formData  = this.loginForm.value;
-
-    console.log(formData);
-    
+    this.authService.login(formData);
   }
 }
