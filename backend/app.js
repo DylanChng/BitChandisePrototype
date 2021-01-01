@@ -32,7 +32,7 @@ app.get('/test', (req,res,next) => {
 
 app.post("/login", (req, res, next) => {
   User.findOne({username: req.body.username})
-    .then(user =>{
+    .then(user =>{ 
       if(!user || user.password !== req.body.password){
         return res.status(401).json({
           message: "Login failed"

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { BitchandiseService } from 'app/shared/global-service/bitchandise.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 
@@ -13,7 +14,7 @@ export class AuthService {
   private currentUser;
   private authListener = new Subject<any>();
 
-  constructor(private http: HttpClient, private router: Router, private toastr: ToastrService) { }
+  constructor(private http: HttpClient, private router: Router, private toastr: ToastrService, private bitchandise: BitchandiseService) { }
 
   getToken(){
     return this.token;
@@ -34,22 +35,32 @@ export class AuthService {
       .subscribe(response =>{
         console.log(response);
         
-        this.toastr.success(response.message, '', {
-          timeOut: 2000,
-          extendedTimeOut: 2000,
-          positionClass: "toast-top-center",
-        });
+        let toastHTMLtemplate = `
+        <div class="container-fluid">
+          <span data-notify="icon" class="nc-icon nc-bell-55"></span>
+          <span data-notify="message">
+              ${response.message}
+          </span>
+        </div>
+        `
+        this.bitchandise.notification(toastHTMLtemplate,"green",500)
 
         setTimeout(() => {
           this.router.navigate(['/admin']);
-        }, 2000);
+        }, 500);
       },err =>{
         console.log(err);
-        this.toastr.error(err.error.message, '', {
-          timeOut: 2000,
-          extendedTimeOut: 2000,
-          positionClass: "toast-top-center",
-        });
+
+        let toastHTMLtemplate = `
+        <div class="container-fluid">
+          <span data-notify="icon" class="nc-icon nc-bell-55"></span>
+          <span data-notify="message">
+              ${err.error.message}
+          </span>
+        </div>
+        `
+
+        this.bitchandise.notification(toastHTMLtemplate,"red",1000)
       })
       
   }
