@@ -10,7 +10,12 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
-    "server": "nodemon --watch backend -e js backend/server.js"
+    "server": "nodemon --watch backend -e js backend/server.js",
+    "node_1": "nodemon --watch dev -e js blockchain/dev/api.js 3001 http://localhost:3001",
+    "node_2": "nodemon --watch dev -e js blockchain/dev/api.js 3002 http://localhost:3002",
+    "node_3": "nodemon --watch dev -e js blockchain/dev/api.js 3003 http://localhost:3003",
+    "node_4": "nodemon --watch dev -e js blockchain/dev/api.js 3004 http://localhost:3004",
+    "node_5": "nodemon --watch dev -e js blockchain/dev/api.js 3005 http://localhost:3005"
   },
   "private": true,
   "dependencies": {
@@ -41,7 +46,10 @@
     "mongoose": "^5.11.8",
     "ngx-toastr": "13.1.0",
     "nodemon": "^2.0.6",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
     "rxjs": "6.6.3",
+    "sha256": "^0.2.0",
     "tslib": "2.0.2",
     "zone.js": "0.11.1"
   },
