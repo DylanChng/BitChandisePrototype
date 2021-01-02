@@ -1,6 +1,7 @@
 //Express backend server
 const express = require('express');
 const app = express();
+const fs = require('fs')
 
 //Node dependencies
 const bodyParser = require('body-parser');
@@ -10,6 +11,8 @@ const rp = require("request-promise");
 //Blockchain related constants
 const Blockchain = require('./blockchain.js');
 const bitchandise = new Blockchain;
+bitchandise.loadChainData();
+
 
 //http://localhost:3001/blockchain - npm run node_1
 //http://localhost:3002/blockchain - npm run node_2
@@ -171,7 +174,7 @@ app.post('/register-and-broadcast-node', (req,res) =>{
         });
 });
 
-//register node
+//register a single node to the network, NOT STANDALONE
 app.post('/register-node', (req,res) =>{
     const newNodeUrl = req.body.newNodeUrl;
     const nodeNotAlreadyPresent = bitchandise.networkNodes.indexOf(newNodeUrl) == -1;
@@ -194,6 +197,7 @@ app.post('/register-node', (req,res) =>{
     res.json({note: "New node registered successfully. "})
 });
 
+//Register a list of nodes for new nodes, NOT standalone
 app.post('/register-nodes-bulk',(req,res) =>{
     const allNetworkNodes = req.body.allNetworkNodes;
 
@@ -209,10 +213,7 @@ app.post('/register-nodes-bulk',(req,res) =>{
     })
 })
 
-app.listen(port, () =>{
-    console.log(`listening on port ${port}...`);
-});
-
+//Syncronize new nodes to have the same data with the network
 app.post("/sync-transaction-new-node", (req,res) => {
     const allTransactions = req.body.transactions;
     bitchandise.chain = allTransactions;
@@ -222,6 +223,7 @@ app.post("/sync-transaction-new-node", (req,res) => {
     })
 })
 
+//Syncronizes by adding new block to all nodes
 app.post("/sync-nodes", (req,res)=> {
     //const nodeUrl = req.body.nodeUrl;
     const newBlock = req.body.newBlock;
@@ -232,3 +234,7 @@ app.post("/sync-nodes", (req,res)=> {
         note: "New block added"
     })
 })
+
+app.listen(port, () =>{
+    console.log(`listening on port ${port}...`);
+});
