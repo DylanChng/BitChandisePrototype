@@ -21,6 +21,7 @@ import { AngularMaterialModule } from "../app/angular-modules/angular-material.m
 //BitChandise related page
 import { BitchandiseLandingComponent } from './bitchandise-landing/bitchandise-landing.component';
 import { LoginComponent } from './login/login.component';
+import { NodesComponent } from './pages/nodes/nodes.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { LoginComponent } from './login/login.component';
     AppComponent,
     AdminLayoutComponent,
     BitchandiseLandingComponent,
-    LoginComponent
+    LoginComponent,
+    NodesComponent
   ],
   imports: [
     BrowserAnimationsModule,
