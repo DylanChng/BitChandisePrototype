@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-//const uniqueValidator = require("mongoose-unique-validator")
+const uniqueValidator = require("mongoose-unique-validator")
 
 const userSchema = mongoose.Schema({
   username: {type: String, required: true, unique: true},
@@ -7,6 +7,6 @@ const userSchema = mongoose.Schema({
   userType: {type: String, required: true}
 });
 
-//userSchema.plugin(uniqueValidator);
+userSchema.plugin(uniqueValidator);
 
-module.exports = mongoose.model("User",userSchema); //Name of collection to insert,update and delete data from
+module.exports = mongoose.model("User",userSchema);

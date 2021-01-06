@@ -21,7 +21,7 @@ import { AngularMaterialModule } from "../app/angular-modules/angular-material.m
 //BitChandise related page
 import { BitchandiseLandingComponent } from './bitchandise-landing/bitchandise-landing.component';
 import { LoginComponent } from './login/login.component';
-import { NodesComponent } from './pages/nodes/nodes.component';
+import { NewNodeComponent } from './pages/nodes/new-node/new-node.component';
 
 
 @NgModule({
@@ -30,7 +30,7 @@ import { NodesComponent } from './pages/nodes/nodes.component';
     AdminLayoutComponent,
     BitchandiseLandingComponent,
     LoginComponent,
-    NodesComponent
+    NewNodeComponent,
   ],
   imports: [
     BrowserAnimationsModule,

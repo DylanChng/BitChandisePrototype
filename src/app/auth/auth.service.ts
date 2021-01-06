@@ -31,7 +31,7 @@ export class AuthService {
   login(credentials: any){
 
     
-    this.http.post("http://localhost:3000/login",{username: credentials.username, password: credentials.password})
+    this.http.post<{message:string}>("http://localhost:3000/login",{username: credentials.username, password: credentials.password})
       .subscribe(response =>{
         console.log(response);
         

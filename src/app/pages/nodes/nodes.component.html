@@ -1,1 +1,44 @@
-<p>nodes works!</p>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+            <h4 class="card-title">Nodes</h4>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-success" (click)="addNodeDialog()">
+                    <i class="fa fa-plus fa-lg"></i> New Node
+                </button>
+                <div class="table-responsive">
+                    <table class="table text-center">
+                        <thead class=" text-dark">
+                            <th>
+                                Node Name
+                            </th>
+                            <th>
+                                Node URL
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let nodes of nodesList">
+                                <td>{{nodes.nodeName}}</td>
+                                <td>{{nodes.nodeURL}}</td>
+                                <td>Status</td>
+                                <td>
+                                    <button type="button" class="fa fa-cog btn btn-primary mr-2" (click)="initNode(nodes)"></button>
+                                    <button type="button" class="fa fa-pencil btn btn-warning mr-2" (click)="editNodeDialog(nodes)"></button>
+                                    <button type="button" class="fa fa-trash btn btn-danger" (click)="onDeleteNode(nodes._id)"></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

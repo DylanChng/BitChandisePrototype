@@ -10,6 +10,7 @@ import { NotificationsComponent } from '../../pages/notifications/notifications.
 import { UpgradeComponent } from '../../pages/upgrade/upgrade.component';
 
 import { NodesComponent } from "../../pages/nodes/nodes.component";
+import { NewNodeComponent } from '../../pages/nodes/new-node/new-node.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: '', redirectTo: 'dashboard', pathMatch: "full"},
@@ -21,5 +22,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'maps',           component: MapsComponent },
     { path: 'notifications',  component: NotificationsComponent },
     { path: 'upgrade',        component: UpgradeComponent },
-    { path: 'nodes',          component: NodesComponent}
+    { path: 'nodes',          component: NodesComponent, children : [
+        {path: 'new-node',    component: NewNodeComponent}
+    ]}
 ];
