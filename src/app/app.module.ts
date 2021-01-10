@@ -1,5 +1,5 @@
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ToastrModule } from "ngx-toastr";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
@@ -22,6 +22,7 @@ import { AngularMaterialModule } from "../app/angular-modules/angular-material.m
 import { BitchandiseLandingComponent } from './bitchandise-landing/bitchandise-landing.component';
 import { LoginComponent } from './login/login.component';
 import { NewNodeComponent } from './pages/nodes/new-node/new-node.component';
+import { BlockchainViewComponent }  from './pages/blockchain-view/blockchain-view.component';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { NewNodeComponent } from './pages/nodes/new-node/new-node.component';
     BitchandiseLandingComponent,
     LoginComponent,
     NewNodeComponent,
+    BlockchainViewComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -48,6 +50,7 @@ import { NewNodeComponent } from './pages/nodes/new-node/new-node.component';
     FixedPluginModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

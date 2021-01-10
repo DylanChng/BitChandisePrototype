@@ -11,6 +11,8 @@ import { UpgradeComponent } from '../../pages/upgrade/upgrade.component';
 
 import { NodesComponent } from "../../pages/nodes/nodes.component";
 import { NewNodeComponent } from '../../pages/nodes/new-node/new-node.component';
+import { BlockchainViewComponent }  from '../../pages/blockchain-view/blockchain-view.component';
+
 
 export const AdminLayoutRoutes: Routes = [
     { path: '', redirectTo: 'dashboard', pathMatch: "full"},
@@ -24,5 +26,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'upgrade',        component: UpgradeComponent },
     { path: 'nodes',          component: NodesComponent, children : [
         {path: 'new-node',    component: NewNodeComponent}
-    ]}
+    ]},
+    { path: 'blockchain',        component: BlockchainViewComponent },
+
 ];

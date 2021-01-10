@@ -1,9 +1,9 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { NewNodeComponent } from './new-node/new-node.component';
 import { NodesService } from './nodes.service';
-declare const idinahuicyka: any;
+import { shareReplay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-nodes',
@@ -15,13 +15,17 @@ export class NodesComponent implements OnInit {
   constructor(private dialog: MatDialog, private nodesService: NodesService) { }
 
   private nodesSub: Subscription;
+  private nodesStatusSub: Subscription;
   nodesList: any;
 
   ngOnInit(): void {
     this.nodesService.getAllNodes();
     this.nodesSub = this.nodesService.getUpdatedNodeListObservable()
       .subscribe(nodes => {
-        this.nodesList = nodes
+        this.nodesList = nodes;
+        this.nodesService.testConnection(nodes)
+      }, err => {
+        this.nodesList = []
       })
   }
 
@@ -48,8 +52,7 @@ export class NodesComponent implements OnInit {
   }
 
   initNode(node){
-    //idinahuicyka();
-    //console.log(process.argv); 
+    this.nodesService.initNode(node);
   }
 
   editNodeDialog(node){
@@ -75,6 +78,7 @@ export class NodesComponent implements OnInit {
         if(this.nodesList[i]._id === updatedNode.id){
           this.nodesList[i].nodeName = updatedNode.nodeName;
           this.nodesList[i].nodeURL = updatedNode.nodeURL;
+          this.nodesList[i].blockchainAPIPath = updatedNode.blockchainAPIPath;
           break;
         }
       }

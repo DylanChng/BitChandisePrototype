@@ -28,7 +28,9 @@
                             <tr *ngFor="let nodes of nodesList">
                                 <td>{{nodes.nodeName}}</td>
                                 <td>{{nodes.nodeURL}}</td>
-                                <td>Status</td>
+                                <td [ngClass]= "nodes.status === 'DOWN' ? 'text-danger' : (nodes.status === 'CONNECTED' ? 'text-success': '')">
+                                    {{nodes.status}}
+                                </td>
                                 <td>
                                     <button type="button" class="fa fa-cog btn btn-primary mr-2" (click)="initNode(nodes)"></button>
                                     <button type="button" class="fa fa-pencil btn btn-warning mr-2" (click)="editNodeDialog(nodes)"></button>

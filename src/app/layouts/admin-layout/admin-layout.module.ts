@@ -13,7 +13,8 @@ import { IconsComponent }           from '../../pages/icons/icons.component';
 import { MapsComponent }            from '../../pages/maps/maps.component';
 import { NotificationsComponent }   from '../../pages/notifications/notifications.component';
 import { UpgradeComponent }         from '../../pages/upgrade/upgrade.component';
-import { NodesComponent } from "../../pages/nodes/nodes.component";
+import { NodesComponent }           from "../../pages/nodes/nodes.component";
+//import { BlockchainViewComponent }  from '../../pages/blockchain-view/blockchain-view.component';
 
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -34,7 +35,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     IconsComponent,
     MapsComponent,
     NotificationsComponent,
-    NodesComponent
+    NodesComponent,
+    //BlockchainViewComponent
+
   ]
 })
 

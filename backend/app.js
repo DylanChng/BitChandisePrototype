@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose')
 const { exec } = require("child_process");
 const { spawn } = require("child_process");
+const path = require('path');
 
 //DB model
 const User = require("./mongdb-models/user")
@@ -64,7 +65,8 @@ app.get("/nodes/getAll", (req, res, next) => {
 app.post("/nodes/add", (req, res, next) => {
   const newNode = new Node({
     nodeName: req.body.nodeName,
-    nodeURL: req.body.nodeURL
+    nodeURL: req.body.nodeURL,
+    blockchainAPIPath: req.body.blockchainAPIPath
   })
   
   newNode.save()
@@ -109,7 +111,8 @@ app.delete("/nodes/delete/:id", (req, res, next) => {
     })
 })
 
-app.get("/nodes/execute", (req, res, next) => {
+app.post("/nodes/execute", (req, res, next) => {
+  /*
     exec("npm run anotherTest", (error, stdout, stderr) => {
       if (error) {
           console.log(`error: ${error.message}`);
@@ -120,8 +123,31 @@ app.get("/nodes/execute", (req, res, next) => {
           return;
       }
       console.log(`stdout: ${stdout}`);
-      res.send("ok")
+      res.json("ok")
   });
+  */
+  const ls = exec(`node "${req.body.blockchainAPIPath}" ${req.body.nodeName} ${req.body.nodeURL}`)
+  
+  ls.stdout.on('data', (data) => {
+    console.log(`${data}`);
+    res.json({
+      message: "Blockchain connection sucessful"
+    })
+  });
+
+  ls.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+    res.json({
+      message: "Blockchain connection failed"
+    })
+  });
+
+  ls.on('close', (code) => {
+    console.log(`child process exited with code ${code}`);
+  });
+
+
+  
 })
 
 module.exports = app;

@@ -9,11 +9,16 @@
                 <input matInput formControlName="nodeName">
                 <mat-error *ngIf="this.newNodeForm.get('nodeName').invalid">This field cannot be empty</mat-error>
             </mat-form-field>
-
             <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Node URL</mat-label>
                 <input matInput formControlName="nodeURL">
                 <mat-error *ngIf="this.newNodeForm.get('nodeURL').invalid">This field cannot be empty</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Blockchain API Path</mat-label>
+                <input matInput formControlName="blockchainAPIPath">
+                <mat-error *ngIf="this.newNodeForm.get('blockchainAPIPath').invalid">This field cannot be empty</mat-error>
             </mat-form-field>
     </mat-dialog-content>
     <mat-dialog-actions align="end" class="mt-auto">
