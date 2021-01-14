@@ -12,6 +12,7 @@ import { UpgradeComponent } from '../../pages/upgrade/upgrade.component';
 import { NodesComponent } from "../../pages/nodes/nodes.component";
 import { NewNodeComponent } from '../../pages/nodes/new-node/new-node.component';
 import { BlockchainViewComponent }  from '../../pages/blockchain-view/blockchain-view.component';
+import { RegisterManufacturerComponent } from '../../pages/register-manufacturer/register-manufacturer.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -27,6 +28,6 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'nodes',          component: NodesComponent, children : [
         {path: 'new-node',    component: NewNodeComponent}
     ]},
-    { path: 'blockchain',        component: BlockchainViewComponent },
-
+    { path: 'blockchain',     component: BlockchainViewComponent },
+    { path: 'register',       component: RegisterManufacturerComponent }
 ];

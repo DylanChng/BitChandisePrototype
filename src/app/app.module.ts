@@ -23,6 +23,8 @@ import { BitchandiseLandingComponent } from './bitchandise-landing/bitchandise-l
 import { LoginComponent } from './login/login.component';
 import { NewNodeComponent } from './pages/nodes/new-node/new-node.component';
 import { BlockchainViewComponent }  from './pages/blockchain-view/blockchain-view.component';
+import { RegisterManufacturerComponent } from './pages/register-manufacturer/register-manufacturer.component';
+import { NewManufacturerComponent } from './pages/register-manufacturer/new-manufacturer/new-manufacturer.component';
 
 
 @NgModule({
@@ -32,7 +34,9 @@ import { BlockchainViewComponent }  from './pages/blockchain-view/blockchain-vie
     BitchandiseLandingComponent,
     LoginComponent,
     NewNodeComponent,
-    BlockchainViewComponent
+    BlockchainViewComponent,
+    RegisterManufacturerComponent,
+    NewManufacturerComponent
   ],
   imports: [
     BrowserAnimationsModule,

@@ -10,15 +10,18 @@ import { Subject } from 'rxjs';
 })
 export class AuthService {
 
-  private token;
+
+  //private token;
+  //For Login
   private currentUser;
   private authListener = new Subject<any>();
 
   constructor(private http: HttpClient, private router: Router, private toastr: ToastrService, private bitchandise: BitchandiseService) { }
 
+  /*
   getToken(){
     return this.token;
-  }
+  }*/
 
   getCurrentUser(){
     return this.currentUser;
@@ -64,5 +67,4 @@ export class AuthService {
       })
       
   }
-
 }

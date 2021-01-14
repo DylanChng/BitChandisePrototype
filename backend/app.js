@@ -28,13 +28,13 @@ app.use((req, res, next) =>{
   next();
 })
 
-//Web API here
 app.get('/test', (req,res,next) => {
     res.status(200).json({
       message: "Connection successful"
     })
 })
 
+//Auth API here
 app.post("/login", (req, res, next) => {
   User.findOne({username: req.body.username})
     .then(user =>{ 
@@ -51,6 +51,54 @@ app.post("/login", (req, res, next) => {
     })
 })
 
+app.post("/manufacturer/register", (req, res, next) => {    
+    const newManufacturer = new User({
+      username: req.body.username,
+      password: req.body.password,
+      name: req.body.manufacturerName,
+      userType: "manufacturer"
+    })
+
+    newManufacturer.save()
+      .then(newManufacturer => {
+        return res.status(200).json({
+          newManufacturer: newManufacturer,
+          message: "New manufacturer successfully created"
+        })
+      }).catch(err =>{
+        console.log(err);
+        return res.status(401).json({
+          err: err,
+          message: "Manufacturer username/name already in use" 
+        })
+      });
+})
+
+app.get("/manufacturer/get", (req, res, next) => {
+  User.find({
+    userType: "manufacturer"
+  }).then(document => {
+    res.status(200).json({
+      message: "Nodes fetched successfully",
+      manufacturers: document
+    })
+  },err => {
+    console.log(err);
+  })
+})
+
+app.delete("/manufacturer/delete/:id", (req, res, next) => {
+  User.deleteOne({username: req.params.id})
+    .then(response =>{
+      res.status(200).json({
+        message: "Manufacturer has been deleted"
+      })
+    }, reject => {
+      res.status(401).json({
+        message: "Error has occured"
+      })
+    })
+})
 
 //Node APIs
 app.get("/nodes/getAll", (req, res, next) => {

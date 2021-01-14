@@ -1,9 +1,8 @@
-import { Component, HostListener, OnInit, ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChildren } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { NewNodeComponent } from './new-node/new-node.component';
 import { NodesService } from './nodes.service';
-import { shareReplay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-nodes',
@@ -15,7 +14,6 @@ export class NodesComponent implements OnInit {
   constructor(private dialog: MatDialog, private nodesService: NodesService) { }
 
   private nodesSub: Subscription;
-  private nodesStatusSub: Subscription;
   nodesList: any;
 
   ngOnInit(): void {
@@ -23,7 +21,7 @@ export class NodesComponent implements OnInit {
     this.nodesSub = this.nodesService.getUpdatedNodeListObservable()
       .subscribe(nodes => {
         this.nodesList = nodes;
-        this.nodesService.testConnection(nodes)
+        this.nodesService.testAllNodesConnection(nodes)
       }, err => {
         this.nodesList = []
       })

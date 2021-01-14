@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BitchandiseService } from 'app/shared/global-service/bitchandise.service';
-import { forkJoin, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 
 @Injectable({
@@ -10,22 +10,22 @@ import { shareReplay } from 'rxjs/operators';
 export class NodesService {
 
   constructor(private http: HttpClient, private bitchandiseService:BitchandiseService) { 
-    this.newNodeObservable.pipe(shareReplay(1))
-    this.updatedNodeListObservable.pipe(shareReplay(1))
+    this.newNodeListener.pipe(shareReplay(1))
+    this.updatedNodeListListener.pipe(shareReplay(1))
   }
 
-  private newNodeObservable = new Subject();
-  private updatedNodeListObservable = new Subject();
-  private nodesList;
+  private newNodeListener = new Subject();
+  private updatedNodeListListener = new Subject();
+  private nodesList: any = [];
   private nodesStatus: any = [];
 
 
   getNewNodeObservableListener(){
-    return this.newNodeObservable.asObservable();
+    return this.newNodeListener.asObservable();
   }
 
   getUpdatedNodeListObservable(){
-    return this.updatedNodeListObservable.asObservable();
+    return this.updatedNodeListListener.asObservable();
   }
 
   getAllNodes(){
@@ -36,8 +36,11 @@ export class NodesService {
           for(let i = 0; i < this.nodesList.length; i++){
             this.nodesList[i]["status"] = "PENDING..."
           }
-          
-          this.updatedNodeListObservable.next(this.nodesList);
+    
+          this.updatedNodeListListener.next(this.nodesList);
+      }, err => {
+        console.log(err);
+        console.log("Cannot get request");
       })
   }
 
@@ -51,9 +54,9 @@ export class NodesService {
     this.http.post("http://localhost:3000/nodes/add", newNodeData)
       .subscribe(result => {
         //console.log(result);
-        this.newNodeObservable.next(result)
+        this.newNodeListener.next(result)
       },err => {
-        this.newNodeObservable.next(err)
+        this.newNodeListener.next(err)
       })
         
   }
@@ -73,10 +76,10 @@ export class NodesService {
           nodeURL: formData.nodeURL,
           blockchainAPIPath: formData.blockchainAPIPath
         }
-        this.newNodeObservable.next(response)
+        this.newNodeListener.next(response)
         
       }, err => {
-        this.newNodeObservable.next(err)
+        this.newNodeListener.next(err)
       })
   }
 
@@ -89,7 +92,7 @@ export class NodesService {
           if(node._id !== nodeId) return node;
         })
 
-        this.updatedNodeListObservable.next(this.nodesList)
+        this.updatedNodeListListener.next(this.nodesList)
       },err => {
         this.bitchandiseService.notification(err.error.message,"red")
       })
@@ -122,7 +125,7 @@ export class NodesService {
       }) 
   }
 
-  testConnection(nodesList){
+  testAllNodesConnection(nodesList){
 
    //let observableList = {};
    //let subscriptionList = []
@@ -142,7 +145,7 @@ export class NodesService {
             for(let i = 0; i < this.nodesList.length; i++){
               this.nodesList[i]["status"] = this.nodesStatus[i]
             }
-            () => this.updatedNodeListObservable.next(this.nodesList)
+            () => this.updatedNodeListListener.next(this.nodesList)
           }
         })
     }

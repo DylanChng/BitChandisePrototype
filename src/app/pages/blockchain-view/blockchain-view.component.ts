@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+import { NodesService } from '../nodes/nodes.service';
 
 @Component({
   selector: 'app-blockchain-view',
@@ -7,9 +10,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BlockchainViewComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dialog: MatDialog, private nodesService: NodesService) { }
+
+  private nodesSub: Subscription;
+  nodesList: any;
 
   ngOnInit(): void {
+    this.nodesService.getAllNodes();
+    this.nodesSub = this.nodesService.getUpdatedNodeListObservable()
+      .subscribe(nodes => {
+        this.nodesList = nodes;
+        this.nodesService.testAllNodesConnection(nodes)
+      }, err => {
+        this.nodesList = []
+      })
   }
 
 }
