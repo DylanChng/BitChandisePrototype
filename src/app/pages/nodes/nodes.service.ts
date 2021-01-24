@@ -32,12 +32,14 @@ export class NodesService {
     this.http.get<{message:string, nodes: any}>("http://localhost:3000/nodes/getAll")
       .subscribe(nodes => {
           this.nodesList = nodes.nodes;
-          
+
+          this.nodesStatus = []
           for(let i = 0; i < this.nodesList.length; i++){
             this.nodesList[i]["status"] = "PENDING..."
           }
-    
+
           this.updatedNodeListListener.next(this.nodesList);
+          this.testAllNodesConnection(this.nodesList)
       }, err => {
         console.log(err);
         console.log("Cannot get request");
@@ -145,7 +147,7 @@ export class NodesService {
             for(let i = 0; i < this.nodesList.length; i++){
               this.nodesList[i]["status"] = this.nodesStatus[i]
             }
-            () => this.updatedNodeListListener.next(this.nodesList)
+            this.updatedNodeListListener.next(this.nodesList)
           }
         })
     }

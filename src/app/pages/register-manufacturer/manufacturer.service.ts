@@ -27,7 +27,6 @@ export class ManufacturerService {
     this.http.get("http://localhost:3000/manufacturer/get")
       .subscribe((response:any) => {
         this.manufacturerList = response.manufacturers
-        console.log(this.manufacturerList);
         this.updatedManufacturerListListener.next(response.manufacturers)
       }, err => {
         console.log(err);

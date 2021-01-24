@@ -21,7 +21,6 @@ export class NodesComponent implements OnInit {
     this.nodesSub = this.nodesService.getUpdatedNodeListObservable()
       .subscribe(nodes => {
         this.nodesList = nodes;
-        this.nodesService.testAllNodesConnection(nodes)
       }, err => {
         this.nodesList = []
       })
