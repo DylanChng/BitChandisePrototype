@@ -13,17 +13,22 @@ export class BlockchainViewComponent implements OnInit {
   constructor(private dialog: MatDialog, private nodesService: NodesService) { }
 
   private nodesSub: Subscription;
-  nodesList: any;
+  nodesList: any = [];
 
   ngOnInit(): void {
     this.nodesService.getAllNodes();
     this.nodesSub = this.nodesService.getUpdatedNodeListObservable()
       .subscribe(nodes => {
-        this.nodesList = nodes;
+        //this.nodesList = nodes;
+        console.log(nodes);
         this.nodesService.testAllNodesConnection(nodes)
       }, err => {
         this.nodesList = []
       })
   }
 
+  nodeChanged(event){
+    console.log(event);
+    
+  }
 }
