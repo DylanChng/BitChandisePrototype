@@ -15,8 +15,7 @@
     "node_2": "nodemon --watch blockchain/dev -e js blockchain/dev/api.js 3002 http://localhost:3002",
     "node_3": "nodemon --watch blockchain/dev -e js blockchain/dev/api.js 3003 http://localhost:3003",
     "node_4": "nodemon --watch blockchain/dev -e js blockchain/dev/api.js 3004 http://localhost:3004",
-    "node_5": "nodemon --watch blockchain/dev -e js blockchain/dev/api.js 3005 http://localhost:3005",
-    "anotherTest": "echo 'LUL'"
+    "node_5": "nodemon --watch blockchain/dev -e js blockchain/dev/api.js 3005 http://localhost:3005"
   },
   "private": true,
   "dependencies": {

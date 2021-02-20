@@ -19,11 +19,11 @@ export class BlockchainViewComponent implements OnInit {
     this.nodesService.getAllNodes();
     this.nodesSub = this.nodesService.getUpdatedNodeListObservable()
       .subscribe(nodes => {
-        //this.nodesList = nodes;
+        this.nodesList = nodes;
         console.log(nodes);
         this.nodesService.testAllNodesConnection(nodes)
       }, err => {
-        this.nodesList = []
+        this.nodesList = null;
       })
   }
 
