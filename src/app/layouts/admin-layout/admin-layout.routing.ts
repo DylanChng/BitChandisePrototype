@@ -14,6 +14,11 @@ import { NewNodeComponent } from '../../pages/nodes/new-node/new-node.component'
 import { BlockchainViewComponent }  from '../../pages/blockchain-view/blockchain-view.component';
 import { RegisterManufacturerComponent } from '../../pages/register-manufacturer/register-manufacturer.component';
 
+//Dylan
+import { AddItemComponent }         from '../../pages/add-item/add-item.component';
+import { UpdateItemComponent } from '../../pages/update-item/update-item.component';
+import { ViewAllCreatedItemsComponent } from '../../pages/view-all-created-items/view-all-created-items.component';
+import { TrackItemComponent } from '../../pages/track-item/track-item.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: '', redirectTo: 'dashboard', pathMatch: "full"},
@@ -29,5 +34,9 @@ export const AdminLayoutRoutes: Routes = [
         {path: 'new-node',    component: NewNodeComponent}
     ]},
     { path: 'blockchain',     component: BlockchainViewComponent },
-    { path: 'register',       component: RegisterManufacturerComponent }
+    { path: 'register',       component: RegisterManufacturerComponent },
+    { path: 'addItem',        component: AddItemComponent },
+    { path: 'updateItem',        component: UpdateItemComponent },
+    { path: 'viewCreatedItems',        component: ViewAllCreatedItemsComponent },
+    { path: 'tracking',        component: TrackItemComponent },
 ];

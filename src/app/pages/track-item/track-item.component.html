@@ -1,0 +1,88 @@
+<div class="row">
+    <div class="col-md-12">
+      <div class="card ">
+        <div class="card-header ">
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="row">
+              <div class="col-md-4"></div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <h5 class="text-center">Track The Item With Item ID</h5>
+                  <input type="text" class="form-control" placeholder="">
+                </div>
+                <button class="btn btn-primary btn-block mb-5">Track Now</button>
+              </div>
+              <div class="col-md-4"></div>
+            </div>
+          </form>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card ">
+        <div class="card-header ">
+        </div>
+        <div class="card-body">
+          <form>
+            <div class="row">
+              <div class="col-md-4"></div>
+              <div class="col-md-4 text-center">
+                <p class="text-center">or</p>
+                <h5 class="text-center">Track The Item With QR Code</h5>
+                <zxing-scanner *ngIf="scannerEnabled" #scanner (scanSuccess)="scanSuccessHandler($event)"></zxing-scanner>
+                <button (click)="enableScanner()" *ngIf="!scannerEnabled" type="button" class="btn btn-warning btn-block">Track With QR Code</button>
+                <p>{{ theInfo }}</p>
+              </div>
+              <div class="col-md-4"></div>
+            </div>
+          </form>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card ">
+        <div class="card-header ">
+        </div>
+        <div class="card-body">
+          <table class="table table-borderless text-center">
+  
+            <tbody>
+              <tr>
+                <th scope="col">Timeline</th>
+                <th scope="col">11/1/2021</th>
+                <th scope="col">15/1/2021</th>
+                <th scope="col">18/1/2021</th>
+                <th scope="col">20/1/2021</th>
+              </tr>
+              <tr>
+                <td></td>
+                <td>Cheras</td>
+                <td>Johor</td>
+                <td>Sabah</td>
+                <td>Ranau</td>
+              </tr>
+              <tr>
+                <td>ItemID</td>
+                <td>Unwashed 25Kg Turnip</td>
+                <td>Washed 25Kg Turnip</td>
+                <td>Washed and Packaged 25Kg Turnip</td>
+                <td>Completely Packaged 2Kg Turnip</td>
+              </tr>
+            </tbody>
+          </table>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  

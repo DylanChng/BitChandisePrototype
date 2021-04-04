@@ -22,6 +22,10 @@ export const ROUTES: RouteInfo[] = [
     { path: '/blockchain',    title: 'Blockchain',              icon:'nc-app',        class: '' },
     { path: '/register',      title: 'Manufacturers',           icon:'nc-single-02',  class: '' },
     //{ path: '/upgrade',       title: 'Upgrade to PRO',          icon:'nc-spaceship',  class: '' },
+    { path: '/addItem',           title: 'Add Item',                  icon:'nc-simple-add', class: '' },
+    { path: '/updateItem',        title: 'Update Item',               icon:'nc-refresh-69', class: '' },
+    { path: '/viewCreatedItems',  title: 'View All Items',            icon:'nc-app',        class: '' },
+    { path: '/tracking',             title: 'Track Item',                icon:'nc-globe-2',    class: '' },
 ];
 
 @Component({

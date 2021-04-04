@@ -25,6 +25,10 @@ import { NewNodeComponent } from './pages/nodes/new-node/new-node.component';
 import { BlockchainViewComponent }  from './pages/blockchain-view/blockchain-view.component';
 import { RegisterManufacturerComponent } from './pages/register-manufacturer/register-manufacturer.component';
 import { NewManufacturerComponent } from './pages/register-manufacturer/new-manufacturer/new-manufacturer.component';
+import { AddItemComponent } from './pages/add-item/add-item.component';
+import { UpdateItemComponent } from './pages/update-item/update-item.component';
+import { TrackItemComponent } from './pages/track-item/track-item.component';
+import { ViewAllCreatedItemsComponent } from './pages/view-all-created-items/view-all-created-items.component';
 
 
 @NgModule({
@@ -36,7 +40,11 @@ import { NewManufacturerComponent } from './pages/register-manufacturer/new-manu
     NewNodeComponent,
     BlockchainViewComponent,
     RegisterManufacturerComponent,
-    NewManufacturerComponent
+    NewManufacturerComponent,
+    AddItemComponent,
+    UpdateItemComponent,
+    TrackItemComponent,
+    ViewAllCreatedItemsComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -44,8 +52,9 @@ import { NewManufacturerComponent } from './pages/register-manufacturer/new-manu
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule.forRoot(AppRoutes,{
-      useHash: true
-    }),
+    useHash: true,
+    relativeLinkResolution: 'legacy'
+}),
     AngularMaterialModule,
     SidebarModule,
     NavbarModule,
