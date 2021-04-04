@@ -114,7 +114,6 @@ app.post("/nodes/add", (req, res, next) => {
   const newNode = new Node({
     nodeName: req.body.nodeName,
     nodeURL: req.body.nodeURL,
-    blockchainAPIPath: req.body.blockchainAPIPath
   })
   
   newNode.save()
@@ -159,6 +158,7 @@ app.delete("/nodes/delete/:id", (req, res, next) => {
     })
 })
 
+/*
 app.post("/nodes/execute", (req, res, next) => {
   /*
     exec("npm run anotherTest", (error, stdout, stderr) => {
@@ -173,7 +173,7 @@ app.post("/nodes/execute", (req, res, next) => {
       console.log(`stdout: ${stdout}`);
       res.json("ok")
   });
-  */
+  
   const ls = exec(`node "${req.body.blockchainAPIPath}" ${req.body.nodeName} ${req.body.nodeURL}`)
   
   ls.stdout.on('data', (data) => {
@@ -197,5 +197,5 @@ app.post("/nodes/execute", (req, res, next) => {
 
   
 })
-
+*/
 module.exports = app;

@@ -7,6 +7,7 @@
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label for="nodeSelect">Nodes</mat-label>
                         <mat-select (selectionChange)="nodeChanged($event)">
+                            <mat-option>---Select a Node---</mat-option>
                             <mat-option *ngFor="let node of nodesList" value="{{node.nodeURL}}" >{{node.nodeName}}</mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -18,10 +19,80 @@
 
                 <mat-tab-group mat-align-tabs="start" *ngIf="this.nodesList.length > 0">
                     <mat-tab label="Blockchain">
-                        Content 1
+                        <div class="my-5 w-100" *ngIf="!this.selectedNode">
+                            Please select a node
+                        </div>
+                        <div class="my-5 w-100 text-danger" 
+                            *ngIf="this.selectedNode && this.selectedNode.status == 'DOWN'">
+                            Node is not online currently
+                        </div>
+                        <div class="my-5 w-100" 
+                            *ngIf="this.selectedNode && this.selectedNode.status == 'CONNECTED'">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Index</th>
+                                        <th>Timestamp</th>
+                                        <!--th>Transaction</th-->
+                                        <th>Nonce</th>
+                                        <th>Hash</th>
+                                        <th>Prev. Block Hash</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let block of this.nodeData.chain">
+                                        <td>{{block.index}}</td>
+                                        <td>{{block.timestamp}}</td>
+                                        <!--td>{{block.transactions}}</td-->
+                                        <td>{{block.nonce}}</td>
+                                        <td>{{block.hash}}</td>
+                                        <td>{{block.previousBlockHash}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>  
                     </mat-tab>
                     <mat-tab label="Transaction">
-                        Content 2
+                        <div class="my-5 w-100" *ngIf="!this.selectedNode">
+                            Please select a node
+                        </div>
+                        <div class="my-5 w-100 text-danger" 
+                            *ngIf="this.selectedNode && this.selectedNode.status == 'DOWN'">
+                            Node is not online currently
+                        </div>
+                        
+                        <div class="my-5 w-100" 
+                            *ngIf="this.selectedNode && this.selectedNode.status == 'CONNECTED'">
+                            <div class="text-danger" *ngIf="this.nodeTransactions.length == 0">
+                                No transactions in blockchain yet
+                            </div>
+                            <table *ngIf="this.nodeTransactions.length > 0" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Item ID</th>
+                                        <th>Item Name</th>
+                                        <th>Description</th>
+                                        <th>Location</th>
+                                        <th>Status</th>
+                                        <th>Comment</th>
+                                        <th>Expiry Date</th>
+                                        <th>Collection Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let transactions of this.nodeTransactions">
+                                        <td>{{transactions.itemId}}</td>
+                                        <td>{{transactions.itemName}}</td>
+                                        <td>{{transactions.description}}</td>
+                                        <td>{{transactions.location}}</td>
+                                        <td>{{transactions.status}}</td>
+                                        <td>{{transactions.comment}}</td>
+                                        <td>{{transactions.expiryDate}}</td>
+                                        <td>{{transactions.collectionDate}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>  
                     </mat-tab>
                 </mat-tab-group>
             </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'app/auth/auth.service';
 import { Subscription } from 'rxjs';
@@ -26,6 +26,10 @@ export class RegisterManufacturerComponent implements OnInit {
       }, err => {
         this.manufacturerList = []
       })
+  }
+  
+  ngOnDestroy(){
+    this.manufacturerListSub.unsubscribe();
   }
 
   onRegisterManufacturer(){

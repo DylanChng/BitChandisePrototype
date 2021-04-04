@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BitchandiseService } from 'app/shared/global-service/bitchandise.service';
@@ -25,6 +25,10 @@ export class NewManufacturerComponent implements OnInit {
   })
 
   ngOnInit(): void {
+  }
+
+  ngOnDestroy(): void {
+    this.newManufacturerSub.unsubscribe();
   }
 
   togglePasswordField(){

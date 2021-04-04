@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren } from '@angular/core';
+import { Component, OnInit, ViewChildren, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { NewNodeComponent } from './new-node/new-node.component';
@@ -21,9 +21,14 @@ export class NodesComponent implements OnInit {
     this.nodesSub = this.nodesService.getUpdatedNodeListObservable()
       .subscribe(nodes => {
         this.nodesList = nodes;
+        console.log(nodes);
       }, err => {
         this.nodesList = []
       })
+  }
+
+  ngOnDestroy(): void{
+    this.nodesSub.unsubscribe();
   }
 
   addNodeDialog(){
@@ -44,6 +49,7 @@ export class NodesComponent implements OnInit {
     })
 
     newNodeDialogRef.afterClosed().subscribe(newNode =>{
+      newNode.status = "CONNECTED";
       if(newNode) this.nodesList.push(newNode)
     })
   }
@@ -82,7 +88,7 @@ export class NodesComponent implements OnInit {
     })
   }
 
-  onDeleteNode(nodeId){
-    this.nodesService.deleteNode(nodeId);
+  onDeleteNode(node){
+    this.nodesService.deleteNode(node);
   }
 }

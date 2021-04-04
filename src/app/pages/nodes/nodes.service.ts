@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { waitForAsync } from '@angular/core/testing';
 import { BitchandiseService } from 'app/shared/global-service/bitchandise.service';
 import { Subject } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
@@ -16,6 +17,7 @@ export class NodesService {
 
   private newNodeListener = new Subject();
   private updatedNodeListListener = new Subject();
+  private nodeDataListener = new Subject();
   private nodesList: any = [];
   private nodesStatus: any = [];
 
@@ -26,6 +28,10 @@ export class NodesService {
 
   getUpdatedNodeListObservable(){
     return this.updatedNodeListListener.asObservable();
+  }
+  
+  getNodeDataListener(){
+    return this.nodeDataListener.asObservable();
   }
 
   getAllNodes(){
@@ -50,54 +56,87 @@ export class NodesService {
     const newNodeData = {
       nodeName: formData.nodeName,
       nodeURL: formData.nodeURL,
-      blockchainAPIPath: formData.blockchainAPIPath
     }
 
-    this.http.post("http://localhost:3000/nodes/add", newNodeData)
-      .subscribe(result => {
-        //console.log(result);
-        this.newNodeListener.next(result)
+    this.http.get(`${formData.nodeURL}/testcon`)
+      .subscribe(response => {
+        this.http.get(`http://localhost:3001/testcon`)
+          .subscribe(result => {
+            this.http.post("http://localhost:3000/nodes/add", newNodeData)
+            .subscribe(result => {
+              //console.log(result);
+              this.newNodeListener.next(result)
+              this.http.post(`http://localhost:3001/register-and-broadcast-node`,{newNodeUrl: formData.nodeURL})
+                .subscribe(result => {
+                    console.log(result);
+                })
+            },err => {
+              this.newNodeListener.next(err)
+            })
+          },err => {
+            this.bitchandiseService.notification("Master node is offline","red");
+          })
       },err => {
-        this.newNodeListener.next(err)
+        this.bitchandiseService.notification("Cant connect to node","red");
+        console.log(err);
       })
-        
+    
   }
 
   editNodeDetails(formData, nodeId){ 
     const updatedNodeData = {
       nodeName: formData.nodeName,
       nodeURL: formData.nodeURL,
-      blockchainAPIPath: formData.blockchainAPIPath
     }
 
-    this.http.put<{message: string}>("http://localhost:3000/nodes/update/" + nodeId,updatedNodeData)
+    this.http.get(`${formData.nodeURL}/testcon`)
+    .subscribe(response => {
+      this.http.put<{message: string}>("http://localhost:3000/nodes/update/" + nodeId,updatedNodeData)
       .subscribe(response => {
         response["updatedNode"] = {
           id: nodeId,
           nodeName: formData.nodeName,
           nodeURL: formData.nodeURL,
-          blockchainAPIPath: formData.blockchainAPIPath
         }
         this.newNodeListener.next(response)
         
       }, err => {
         this.newNodeListener.next(err)
       })
+    },err => {
+      this.bitchandiseService.notification("Cant connect to node","red");
+      console.log(err);
+    })
   }
 
-  deleteNode(nodeId){
-    this.http.delete<{message: string}>("http://localhost:3000/nodes/delete/" + nodeId)
+  deleteNode(deleteNode){
+    this.http.get(`${deleteNode.nodeURL}/testcon`)
       .subscribe(response => {
         
-        this.bitchandiseService.notification(response.message)
-        this.nodesList = this.nodesList.filter(node => {          
-          if(node._id !== nodeId) return node;
-        })
+        //Delete from all nodes
+        this.http.post("http://localhost:3001/unregister-nodes-broadcast", {nodeUrl: deleteNode.nodeURL})
+          .subscribe(response => {
+            //Delete from db
+            this.http.delete<{message: string}>("http://localhost:3000/nodes/delete/" + deleteNode._id)
+             .subscribe(response => {  
+              this.bitchandiseService.notification(response.message)
+              this.nodesList = this.nodesList.filter(node => {          
+                if(node._id !== deleteNode._id) return node;
+              })
 
-        this.updatedNodeListListener.next(this.nodesList)
-      },err => {
-        this.bitchandiseService.notification(err.error.message,"red")
-      })
+              this.updatedNodeListListener.next(this.nodesList)
+            },err => {
+              this.bitchandiseService.notification(err.error.message,"red")
+            })
+          },err => {
+            console.log(err);
+          })
+
+        
+    },err => {
+      this.bitchandiseService.notification("Cant connect to node","red");
+      console.log(err);
+    })
   }
 
   initNode(node){
@@ -127,43 +166,47 @@ export class NodesService {
       }) 
   }
 
-  testAllNodesConnection(nodesList){
-
-   //let observableList = {};
-   //let subscriptionList = []
-
-   for(let i = 0; i < nodesList.length ; i++){
+   testAllNodesConnection(nodesList){
+           
+    for(let i = 0; i < nodesList.length ; i++){
       this.http.get(`${nodesList[i].nodeURL}/testcon`)
         .subscribe(response => {
-          //console.log(response);
-          this.nodesStatus.push("CONNECTED")
+          this.nodesStatus.push({
+            key: nodesList[i].nodeURL,
+            status: "CONNECTED"
+          })
         }, err => {
-          //console.log(err);
-          this.nodesStatus.push("DOWN")
+          //console.log(err);          
+          this.nodesStatus.push({
+            key: nodesList[i].nodeURL,
+            status: "DOWN"
+          })
         })
         .add(() => {
-          if(this.nodesStatus.length === nodesList.length){
+          //console.log(nodesList[i].nodeURL);
 
+          if(this.nodesStatus.length === nodesList.length){            
             for(let i = 0; i < this.nodesList.length; i++){
-              this.nodesList[i]["status"] = this.nodesStatus[i]
+              for(let j = 0; j < this.nodesStatus.length ;j++){
+                if(nodesList[i].nodeURL === this.nodesStatus[j].key){
+                  this.nodesList[i]["status"] = this.nodesStatus[j].status;
+                }
+              }
             }
             this.updatedNodeListListener.next(this.nodesList)
           }
         })
     }
-   
+     
+  }
 
-    /*
-    console.log(observableList);
-    
-    forkJoin(observableList)
-      .subscribe(response => {
-        console.log(response);  
-      }, err => {
-
-      })
-
-    */
+  getNodeData(nodeURL){    
+    this.http.get(`${nodeURL}/blockchain`)
+    .subscribe(response => {
+      this.nodeDataListener.next(response)
+    }, err => {
+      console.log(err);
+    })
   }
 
 }

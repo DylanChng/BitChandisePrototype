@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { NodesService } from '../nodes/nodes.service';
@@ -14,21 +14,43 @@ export class BlockchainViewComponent implements OnInit {
 
   private nodesSub: Subscription;
   nodesList: any = [];
+  selectedNode;
+
+  private nodeDataSub: Subscription;
+  nodeData;
+  nodeTransactions = [];
 
   ngOnInit(): void {
     this.nodesService.getAllNodes();
     this.nodesSub = this.nodesService.getUpdatedNodeListObservable()
       .subscribe(nodes => {
         this.nodesList = nodes;
-        console.log(nodes);
-        this.nodesService.testAllNodesConnection(nodes)
       }, err => {
-        this.nodesList = null;
+        this.nodesList = [];
       })
   }
 
-  nodeChanged(event){
-    console.log(event);
-    
+  ngOnDestroy () {
+    this.nodesSub.unsubscribe();
   }
+
+  nodeChanged(event){
+    this.selectedNode = this.nodesList.filter((node) => node.nodeURL == event.value);
+    this.selectedNode = this.selectedNode[0];
+    this.nodesService.getNodeData(this.selectedNode.nodeURL);
+    this.nodeDataSub = this.nodesService.getNodeDataListener()
+      .subscribe(nodeData => {
+        //console.log(nodeData);
+        this.nodeData = nodeData;
+        this.nodeTransactions = [];
+        this.extractTransactions();
+      })
+  }
+  
+  extractTransactions(){
+    this.nodeData.chain.forEach(block => {
+      this.nodeTransactions.push(...block.transactions);
+    });
+  }
+  
 }

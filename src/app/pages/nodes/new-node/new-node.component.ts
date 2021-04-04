@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BitchandiseService } from 'app/shared/global-service/bitchandise.service';
@@ -20,7 +20,7 @@ export class NewNodeComponent implements OnInit {
   newNodeForm = this.fb.group({
     nodeName: ["",[Validators.required]],
     nodeURL: ["",[Validators.required]],
-    blockchainAPIPath: ["",[Validators.required]]
+    //blockchainAPIPath: ["",[Validators.required]]
   })
 
   ngOnInit(): void {
@@ -28,9 +28,13 @@ export class NewNodeComponent implements OnInit {
       this.newNodeForm.patchValue({
         "nodeName": this.data.node.nodeName,
         "nodeURL": this.data.node.nodeURL, 
-        "blockchainAPIPath": this.data.node.blockchainAPIPath, 
       })
     }
+  }
+
+  ngOnDestroy() : void {
+    if(this.newNodeSub)
+      this.newNodeSub.unsubscribe();
   }
 
   formSubmit(){
@@ -45,8 +49,7 @@ export class NewNodeComponent implements OnInit {
     //Edit Validation
     if(this.data.mode === "Edit"){
       if(this.data.node.nodeName === formData.nodeName && 
-         this.data.node.nodeURL === formData.nodeURL &&
-         this.data.node.blockchainAPIPath === formData.blockchainAPIPath){
+         this.data.node.nodeURL === formData.nodeURL){
         this.bitchandiseService.notification("No changes was made to the node's details","red",1500)
         return;
       }

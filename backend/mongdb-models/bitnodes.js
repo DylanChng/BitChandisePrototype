@@ -4,7 +4,6 @@ const uniqueValidator = require("mongoose-unique-validator")
 const nodeSchema = mongoose.Schema({
   nodeName: {type: String, required: true, unique: true},
   nodeURL: {type: String, required: true, unique: true},
-  blockchainAPIPath: {type: String, required: true}
 });
 
 nodeSchema.plugin(uniqueValidator);
