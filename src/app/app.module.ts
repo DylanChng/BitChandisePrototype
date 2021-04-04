@@ -30,6 +30,10 @@ import { UpdateItemComponent } from './pages/update-item/update-item.component';
 import { TrackItemComponent } from './pages/track-item/track-item.component';
 import { ViewAllCreatedItemsComponent } from './pages/view-all-created-items/view-all-created-items.component';
 
+//Dylan Qr Code related imports
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { NgxQRCodeModule } from 'ngx-qrcode2';
+
 
 @NgModule({
   declarations: [
@@ -51,9 +55,13 @@ import { ViewAllCreatedItemsComponent } from './pages/view-all-created-items/vie
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    //Dylan's QRCode 
+    ZXingScannerModule,
+    NgxQRCodeModule,
+    //Dylan's end
     RouterModule.forRoot(AppRoutes,{
     useHash: true,
-    relativeLinkResolution: 'legacy'
+    relativeLinkResolution: 'legacy',
 }),
     AngularMaterialModule,
     SidebarModule,

@@ -15,7 +15,19 @@ import { NotificationsComponent }   from '../../pages/notifications/notification
 import { UpgradeComponent }         from '../../pages/upgrade/upgrade.component';
 import { NodesComponent }           from "../../pages/nodes/nodes.component";
 //import { BlockchainViewComponent }  from '../../pages/blockchain-view/blockchain-view.component';
-
+//Dylan
+//materials
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+//Material imports here
+import { MatCardModule } from "@angular/material/card";
+import {MatTableModule} from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from "@angular/material/button";
+import { MatSelectModule } from '@angular/material/select';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -24,7 +36,17 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     CommonModule,
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
-    NgbModule
+    NgbModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatDividerModule,
+    MatButtonModule,
+    MatSelectModule,
   ],
   declarations: [
     DashboardComponent,
@@ -37,7 +59,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NotificationsComponent,
     NodesComponent,
     //BlockchainViewComponent
-
   ]
 })
 
