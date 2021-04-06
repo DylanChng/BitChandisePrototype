@@ -103,7 +103,7 @@ export class AddItemComponent implements OnInit {
     console.log(newItem.collectionDate.toLocaleString('default', { month: 'long' }));
 
     await this.nodesService.addNewItem(newItem);
-    this.nodesService.mining();
+    //this.nodesService.mining();
     //this.itemService.addItem(newItem);
     console.log(newItem);
     //alert("Added a New Item.");

@@ -237,26 +237,31 @@ export class NodesService {
     }
 
     //call api 
-        this.http.get(`http://localhost:3001/testcon`)
-          .subscribe(result => {
-            this.http.post("http://localhost:3001/createItem", newItem)
+    this.http.get(`http://localhost:3001/testcon`)
+      .subscribe(result => {
+        this.http.post("http://localhost:3001/createItem", newItem)
+        .subscribe(result => {
+          console.log(result);
+          this.http.get<{message:string}>("http://localhost:3001/mine")
             .subscribe(result => {
-              console.log(result);
-          })
-            console.log(result);
-          },err => {
-            this.bitchandiseService.notification("Master node is offline","red");
-          })
+              console.log(result.message);
+            },err=>console.log(err)
+          )
+      })
+        console.log(result);
+      },err => {
+        this.bitchandiseService.notification("Master node is offline","red");
+      })
       
   }
 
   //mine
-  mining(){
-    this.http.get<{message:string}>("http://localhost:3001/mine")
-    .subscribe(result => {
-      console.log(result.message);
-  },err=>console.log(err)) 
-  }
+  // mining(){
+  //   this.http.get<{message:string}>("http://localhost:3001/mine")
+  //   .subscribe(result => {
+  //     console.log(result.message);
+  // },err=>console.log(err)) 
+  // }
 
 
 
