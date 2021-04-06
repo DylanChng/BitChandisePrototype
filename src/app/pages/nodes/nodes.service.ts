@@ -209,4 +209,58 @@ export class NodesService {
     })
   }
 
+
+  //Dylan
+
+  //get all data based on manufacturer?????
+  getAllMyData(nodeURL){    
+    this.http.get(`${nodeURL}/blockchain`)
+    .subscribe(response => {
+      this.nodeDataListener.next(response)
+    }, err => {
+      console.log(err);
+    })
+  }
+
+  //create new item
+  addNewItem(item) {
+    const newItem = {
+      itemId: item.itemId,
+      itemName: item.itemName,
+      description: item.description,
+      status: item.status,
+      comment: item.comment,
+      location: item.location,
+      expiryDate: item.expiryDate,
+      collectionDate: item.collectionDate,
+      madeBy: item.madeBy,
+    }
+
+    //call api 
+        this.http.get(`http://localhost:3001/testcon`)
+          .subscribe(result => {
+            this.http.post("http://localhost:3001/createItem", newItem)
+            .subscribe(result => {
+              console.log(result);
+          })
+            console.log(result);
+          },err => {
+            this.bitchandiseService.notification("Master node is offline","red");
+          })
+      
+  }
+
+  //mine
+  mining(){
+    this.http.get<{message:string}>("http://localhost:3001/mine")
+    .subscribe(result => {
+      console.log(result.message);
+  },err=>console.log(err)) 
+  }
+
+
+
+
+
+  //end
 }

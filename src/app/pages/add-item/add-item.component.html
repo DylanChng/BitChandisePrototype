@@ -2,61 +2,71 @@
       <mat-card class="mat-elevation-z8">
         <mat-card-header>
           <mat-card-title>New Item Entry Form</mat-card-title>
-
         </mat-card-header>
+
         <form #postForm="ngForm" (submit)="recordNewItem(postForm)" id="" ngNativeValidate>
           <mat-card-content layout-align="center">
-              <mat-form-field appearance="outline">
-                <mat-label>Item Name</mat-label>
-                <input matInput ngModel type="text" name="itemName" placeholder="Item Name" required #itemName="ngModel" minlength="4">
-                <mat-error *ngIf="itemName.invalid">Please enter an item name</mat-error>
-              </mat-form-field>
-
-              <mat-form-field appearance="outline">
-                <mat-label>Description</mat-label>
-                <input matInput ngModel type="text" name="description" placeholder="Description" required #description="ngModel" minlength="4">
-              </mat-form-field>
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Item Name</mat-label>
+                  <input matInput ngModel type="text" name="itemName" placeholder="Item Name" required #itemName="ngModel" minlength="4">
+                  <mat-error *ngIf="itemName.invalid">Please enter an item name</mat-error>
+                </mat-form-field>
+  
+                <mat-form-field appearance="outline">
+                  <mat-label>Description</mat-label>
+                  <input matInput ngModel type="text" name="description" placeholder="Description" required #description="ngModel" minlength="4">
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                  <mat-label>Remarks</mat-label>
+                  <input matInput ngModel type="text" name="remark" placeholder="Remarks" required #remark="ngModel">
+                </mat-form-field>
+  
+                <mat-form-field appearance="outline">
+                  <mat-label>Location/Provenance</mat-label>
+                  <input matInput ngModel type="text" name="location" placeholder="Location" required #location="ngModel" minlength="4">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4"></div>
+              <div class="col-md-4 d-flex justify-content-center">
+                <mat-form-field appearance="fill">
+                  <mat-label>Status</mat-label>
+                  <select matNativeControl matInput ngModel name="status" #status="ngModel" required>
+                    <option value=""></option>
+                    <option value="completed">Completed</option>
+                    <option value="inprogress">In Progress</option>
+                  </select>
+                </mat-form-field>
+              </div><div class="col-md-4"></div>
+            </div>
             </mat-card-content>
 
-            <mat-card-content>
-              <mat-form-field appearance="outline">
-                <mat-label>Remarks</mat-label>
-                <input matInput ngModel type="text" name="remark" placeholder="Remarks" required #remark="ngModel">
-              </mat-form-field>
-
-              <mat-form-field appearance="outline">
-                <mat-label>Location/Provenance</mat-label>
-                <input matInput ngModel type="text" name="location" placeholder="Location" required #location="ngModel" minlength="4">
-              </mat-form-field>
-            </mat-card-content>
-
-            <mat-card-content class="col-md-4">
-              <mat-form-field appearance="fill">
-                <mat-label>Status</mat-label>
-                <select matNativeControl matInput ngModel name="status" #status="ngModel" required>
-                  <option value=""></option>
-                  <option value="completed">Completed</option>
-                  <option value="inprogress">In Progress</option>
-                </select>
-              </mat-form-field>
-            </mat-card-content>
-
-          <mat-card-content class="col-md-4">
-              <mat-label class="mr-3">Expiry Date</mat-label>
-              <mat-form-field class="datePickers" appearance="fill">
-                <mat-label></mat-label>
-                <input matInput [formControl]="expDate" [matDatepicker]="picker1" [min]="minDate" required>
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                <mat-datepicker #picker1></mat-datepicker>
-              </mat-form-field>
-
-              <mat-label class="mr-3">Collection Date</mat-label>
-              <mat-form-field class="datePickers" color="" appearance="fill" >
-                <mat-label></mat-label>
-                <input matInput [formControl]="colDate" [matDatepicker]="picker2" [min]="minDate" required>
-                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                <mat-datepicker #picker2></mat-datepicker>
-              </mat-form-field>
+          <mat-card-content>
+            <div class="row">
+              <div class="col-md-6">
+                <mat-label class="mr-3">Expiry Date</mat-label>
+                <mat-form-field class="datePickers" appearance="fill">
+                  <mat-label></mat-label>
+                  <input matInput [formControl]="expDate" [matDatepicker]="picker1" [min]="minDate" required>
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-label class="mr-3">Collection Date</mat-label>
+                <mat-form-field class="datePickers" color="" appearance="fill" >
+                  <mat-label></mat-label>
+                  <input matInput [formControl]="colDate" [matDatepicker]="picker2" [min]="minDate" required>
+                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                  <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
           </mat-card-content> 
     
 
@@ -68,84 +78,79 @@
 
       <mat-divider class="content-divider"></mat-divider>
 
+      <mat-card class="mat-elevation-z8">
+        <mat-card-header>
+          <mat-card-title>Recently Added and Mined Transactions</mat-card-title>
+        </mat-card-header>
+        <div class="card-body">
+          <div class="table">
+          <p *ngIf="this.dataSource.filteredData.length == 0" style="text-align: center;">There Is No Item Added Yet</p>
+        <table class="table table-responsive" mat-table matSort [dataSource]="dataSource" id="itemTable" *ngIf="this.dataSource.filteredData.length > 0"> 
+          
+            <!--  ID Column -->
+            <ng-container matColumnDef="itemId">
+              <th mat-header-cell *matHeaderCellDef> Item ID </th>
+              <td mat-cell *matCellDef="let item"> {{item.itemId}} </td>
+            </ng-container>
+    
+            <!--Item name Column -->
+            <ng-container matColumnDef="itemName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Item Name </th>
+              <td mat-cell *matCellDef="let item"> {{item.itemName}} </td>
+            </ng-container>
+    
+            <!--Item Description Column -->
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+              <td mat-cell *matCellDef="let item"> {{item.description}} </td>
+            </ng-container>
+    
+            <!--Item Location Column -->
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Location </th>
+              <td mat-cell *matCellDef="let item"> {{item.location}} </td>
+            </ng-container>
+    
+             <!--Item status Column -->
+             <ng-container matColumnDef="remarks">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+              <td mat-cell *matCellDef="let item"> {{item.status}} </td>
+            </ng-container>
+    
+            <!--Item comment Column -->
+            <ng-container matColumnDef="location">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Comment </th>
+              <td mat-cell *matCellDef="let item"> {{item.comment}} </td>
+            </ng-container>
+    
+            <!--Expiry date Column -->
+            <ng-container matColumnDef="expiryDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Expiry Date </th>
+              <td mat-cell *matCellDef="let item"> 
+                {{item.expiryDate}}</td>
+            </ng-container>
+    
+             <!--Collection date Column -->
+             <ng-container matColumnDef="collectionDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Collection Date </th>
+              <td mat-cell *matCellDef="let item"> 
+                {{item.collectionDate}}</td>
+            </ng-container>
+    
+            <!--Item location Column -->
+            <ng-container matColumnDef="manufacturer">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Manufacturer Company </th>
+              <td mat-cell *matCellDef="let item"> {{item.madeBy}} </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="columnName"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnName;"></tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+        </div>
+        </div>
+      </mat-card>
+   
+    
 
-    <mat-card class="mat-elevation-z8">
-      <mat-card-header>
-        <mat-card-title>Recently Added</mat-card-title>
-      </mat-card-header>
-      <div class="card-body">
-        <div class="table-responsive">
-        <p *ngIf="this.dataSource.filteredData.length == 0" style="text-align: center;">There is no item added yet</p>
-        <table class="table" mat-table matSort [dataSource]="dataSource" id="itemTable" *ngIf="this.dataSource.filteredData.length > 0">
-          <!--  ID Column -->
-          <ng-container matColumnDef="itemId">
-            <th mat-header-cell *matHeaderCellDef> Item ID </th>
-            <td mat-cell *matCellDef="let item"> {{item.itemId}} </td>
-          </ng-container>
-
-          <!--Item name Column -->
-          <ng-container matColumnDef="itemName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Item Name </th>
-            <td mat-cell *matCellDef="let item"> {{item.itemName}} </td>
-          </ng-container>
-
-          <!--Item name Column -->
-          <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
-            <td mat-cell *matCellDef="let item"> {{item.description}} </td>
-          </ng-container>
-
-          <!--Item Status Column -->
-          <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-            <td mat-cell *matCellDef="let item"> {{item.status}} </td>
-          </ng-container>
-
-           <!--Item Remarks Column -->
-           <ng-container matColumnDef="remarks">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Remarks </th>
-            <td mat-cell *matCellDef="let item"> {{item.remarks}} </td>
-          </ng-container>
-
-          <!--Item location Column -->
-          <ng-container matColumnDef="location">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Location/Provenance </th>
-            <td mat-cell *matCellDef="let item"> {{item.location}} </td>
-          </ng-container>
-
-          <!--Expirty date Column -->
-          <ng-container matColumnDef="expiryDate">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Expiry Date </th>
-            <td mat-cell *matCellDef="let item"> 
-              {{item.expiryDate.getDate() + '-'}} 
-              {{item.expiryDate.toLocaleString('default', { month: 'long' }) + '-'}}
-              {{item.expiryDate.getFullYear()}} </td>
-          </ng-container>
-
-           <!--Collection date Column -->
-           <ng-container matColumnDef="collectionDate">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Collection Date </th>
-            <td mat-cell *matCellDef="let item"> 
-              {{item.collectionDate.getDate() + '-'}} 
-              {{item.collectionDate.toLocaleString('default', { month: 'long' }) + '-'}}
-              {{item.collectionDate.getFullYear()}} </td>
-          </ng-container>
-
-          <!--Qr column-->
-          <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> QR Code </th>
-            <td mat-cell *matCellDef="let item" style="padding-top: 1.34375em!important">
-              <ngx-qrcode [value]="item.itemId"></ngx-qrcode>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="columnName"></tr>
-          <tr mat-row *matRowDef="let row; columns: columnName;"></tr>
-        </table>
-        <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
-      </div>
-      </div>
-    </mat-card>
-
-
-
+   

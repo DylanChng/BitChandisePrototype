@@ -3,10 +3,11 @@ export interface Item {
     itemName: string;
     description: string;
     status: string;
-    remarks: string;
+    comment: string;
     location: string;
     expiryDate: Date;
     collectionDate: Date;
+    madeBy: String;
   }
 
 

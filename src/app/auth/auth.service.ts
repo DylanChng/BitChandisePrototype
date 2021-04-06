@@ -34,9 +34,11 @@ export class AuthService {
   login(credentials: any){
 
     
-    this.http.post<{message:string}>("http://localhost:3000/login",{username: credentials.username, password: credentials.password})
+    this.http.post<{message:string, user:any}>("http://localhost:3000/login",{username: credentials.username, password: credentials.password})
       .subscribe(response =>{
         console.log(response);
+        //set current user
+        this.currentUser = response.user;
         
         let toastHTMLtemplate = `
         <div class="container-fluid">
@@ -66,5 +68,9 @@ export class AuthService {
         this.bitchandise.notification(toastHTMLtemplate,"red",1000)
       })
       
+  }
+
+  logout(){
+    this.currentUser = null;
   }
 }
