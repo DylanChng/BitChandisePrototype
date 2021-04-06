@@ -5,8 +5,8 @@ export interface Item {
     status: string;
     remarks: string;
     location: string;
-    expiryDate: string;
-    collectionDate: string;
+    expiryDate: Date;
+    collectionDate: Date;
   }
 
 

@@ -1,1 +1,127 @@
 <p>update-item works!</p>
+<div class="row">
+    <div class="col-8">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">  Editable Items</h4>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead class=" text-primary">
+                <th>
+                  Item ID
+                </th>
+                <th>
+                  Item Name
+                </th>
+                <th>
+                  Description
+                </th>
+                <th>
+                  Status
+                </th>
+                <th>
+                  Remarks
+                </th>
+                <th>
+                  Location/Provenance
+                </th>
+                <th>
+                  Expiry Date
+                </th>
+                <th>
+                  Collection Date
+                </th>
+              </thead>
+              <tbody>
+                <tr>
+  
+                </tr>
+  
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- edit form -->
+  
+  <div class="col-md-4">
+    <div class="card card-user">
+      <div class="card-header">
+        <h5 class="card-title">Item ID: </h5>
+      </div>
+      <div class="card-body">
+        <form>
+          <div class="row">
+            <div class="col-md-6 pr-1">
+              <div class="form-group">
+                <label>Item Name</label>
+                <input type="text" class="form-control" placeholder="">
+              </div>
+            </div>
+            <div class="col-md-6 px-1">
+              <div class="form-group">
+                <label>Description</label>
+                <input type="text" class="form-control" placeholder="">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 pr-1">
+              <div class="form-group">
+                <label>Status</label>
+                <select class=" form-control" name="status">
+                  <option value="">Processing</option>
+                  <option value="">Delivered</option>
+                  <option value="">In Transit</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6 pl-1">
+              <div class="form-group">
+                <label>Remarks/Comments</label>
+                <textarea type="text" class="form-control" placeholder=""></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Location of Manufacture</label>
+                <input type="text" class="form-control" placeholder="">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="mr-3">Expiry Date</label>
+              <mat-form-field color="" appearance="fill">
+                <mat-label></mat-label>
+                <input matInput [matDatepicker]="picker1">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <label class="mr-3">Collection Date</label>
+            <mat-form-field color="" appearance="fill">
+              <mat-label></mat-label>
+              <input matInput [matDatepicker]="picker2">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <div class="update ml-auto mr-auto">
+              <button type="submit" class="btn btn-primary btn-round">Add Item</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+  

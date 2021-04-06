@@ -8,8 +8,8 @@ itemId: {type: String, required: true, unique: true},
   status:     {type: String, required: true},
   remarks: {type: String, required: true},
   location: {type: String, required: true},
-  expiryDate: {type: String, required: true},
-  collectionDate: {type: String, required: true},
+  expiryDate: {type: Date, required: true},
+  collectionDate: {type: Date, required: true},
 
 });
 

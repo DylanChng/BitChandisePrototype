@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {FormControl} from '@angular/forms';
+import {FormControl, FormGroup} from '@angular/forms';
 import { NgForm } from "@angular/forms";
 import { ItemService } from "./item.service";
 import { Item } from '../../model/item.model';
@@ -18,7 +18,6 @@ import { Guid } from "guid-typescript";
   styleUrls: ['./add-item.component.css']
 })
 export class AddItemComponent implements OnInit {
-
   //QR related
   title = 'app';
   elementType = 'url';
@@ -26,7 +25,10 @@ export class AddItemComponent implements OnInit {
 
   //declarations
   minDate = new Date();
-  colDate = new Date();
+  maxDate = new Date();
+  expDate = new FormControl();
+  colDate = new FormControl();
+  //serializedDate = new FormControl((new Date()).toISOString());
 
 
   itemList: Item[] = [];
@@ -43,7 +45,16 @@ export class AddItemComponent implements OnInit {
   public theItemId: Guid;
 
   constructor(public itemService: ItemService) {
+    // const today = new Date();
+    // const month = today.getMonth();
+    // const year = today.getFullYear();
 
+    // this.additem = new FormGroup({
+    //   start: new FormControl(new Date(year, month, 13)),
+    //   end: new FormControl(new Date(year, month, 16))
+
+    // });
+    
   }
 
   ngOnInit(): void {
@@ -65,6 +76,12 @@ export class AddItemComponent implements OnInit {
     //generate UUID
     this.theItemId = Guid.create();
 
+    // console.log(this.expDate.value.toISOString());
+    // console.log(this.colDate.value.toISOString());
+
+    // console.log(this.expDate.value.getDay());
+    // console.log(this.expDate.value.getMonth());
+    // console.log(this.expDate.value.getFullYear());
     const newItem: Item = {
       itemId: this.theItemId.toString(),
       itemName: formData.value.itemName,
@@ -72,11 +89,14 @@ export class AddItemComponent implements OnInit {
       status: formData.value.status,
       remarks: formData.value.remark,
       location: formData.value.location,
-      // expiryDate: formData.value.expiryDate,
-      // collectionDate: formData.value.collectionDate,
-      expiryDate: "27/2/2021",
-      collectionDate: "27/3/2021",
+      expiryDate: this.expDate.value,
+      collectionDate: this.colDate.value,
     };
+
+
+    console.log(newItem.collectionDate.toLocaleString('default', { month: 'long' }));
+
+
     this.itemService.addItem(newItem);
     console.log(newItem);
     alert("Added a New Item.");
