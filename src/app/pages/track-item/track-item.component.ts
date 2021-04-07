@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { Subscription } from 'rxjs';
 import { Guid } from "guid-typescript";
+import { BitchandiseService } from 'app/shared/global-service/bitchandise.service';
 
 //import { AuthService } from 'app/auth/auth.service';
 import { NodesService } from '../nodes/nodes.service';
@@ -44,7 +45,7 @@ export class TrackItemComponent implements OnInit {
 
   scannerEnabled: boolean = false;
 
-  constructor(public itemService: ItemService, private nodesService: NodesService) { }
+  constructor(public itemService: ItemService, private nodesService: NodesService, private bitchandise: BitchandiseService) { }
 
   private nodesSub: Subscription;
   nodesList: any = [];
@@ -67,6 +68,7 @@ export class TrackItemComponent implements OnInit {
   }
 
   public scanSuccessHandler($event: any) {
+    this.timelineList = [];
     this.scannerEnabled = false;
     this.theInfo =  $event;
     this.theItem = this.findItemIdScanner($event);
@@ -81,6 +83,7 @@ export class TrackItemComponent implements OnInit {
    //retrieve the specific item
    findItemId(formData: NgForm){
     var i;
+    this.editedItemList =[];
     for(i=0; i<this.nodeTransactions.length; i++){
       //console.log(this.itemList[i]);
       if(this.nodeTransactions[i].itemId == formData.value.theItemId){
@@ -97,13 +100,25 @@ export class TrackItemComponent implements OnInit {
       //var theLastIndex = this.editedItemList.length;
       this.theInfo = "Successfully Found The Item";
         //set the latest item to display
+        this.timelineList = [];
         this.timelineList = this.editedItemList;
         console.log("this is is!",this.timelineList);
         
-      return this.theRetrievedItem;
+      return;
     }else{
       console.log('Item Not Found');
-      this.theRetrievedItem = null;
+      //this.theRetrievedItem = null;
+      var msg = "Item Does Not Exist";
+      let toastHTMLtemplate = `
+        <div class="container-fluid">
+          <span data-notify="icon" class="nc-icon nc-bell-55"></span>
+          <span data-notify="message">
+              ${msg}
+          </span>
+        </div>
+        `
+        this.bitchandise.notification(toastHTMLtemplate,"red",1000);
+
       this.theInfo = "Sorry Try Again";
       this.enableScanner();
     }
@@ -111,6 +126,7 @@ export class TrackItemComponent implements OnInit {
 
   findItemIdScanner(item: String){
     var i;
+    this.editedItemList =[];
     for(i=0; i<this.nodeTransactions.length; i++){
       //console.log(this.itemList[i]);
       if(this.nodeTransactions[i].itemId == item){
@@ -127,13 +143,24 @@ export class TrackItemComponent implements OnInit {
       //var theLastIndex = this.editedItemList.length;
       this.theInfo = "Successfully Found The Item";
         //set the latest item to display
+        this.timelineList = [];
         this.timelineList = this.editedItemList;
         console.log("this is is!",this.timelineList);
         
       return this.theRetrievedItem;
     }else{
       console.log('Item Not Found');
-      this.theRetrievedItem = null;
+      //this.theRetrievedItem = null;
+      var msg = "Item Does Not Exist";
+      let toastHTMLtemplate = `
+        <div class="container-fluid">
+          <span data-notify="icon" class="nc-icon nc-bell-55"></span>
+          <span data-notify="message">
+              ${msg}
+          </span>
+        </div>
+        `
+        this.bitchandise.notification(toastHTMLtemplate,"red",1000);
       this.theInfo = "Sorry Try Again";
       this.enableScanner();
     }

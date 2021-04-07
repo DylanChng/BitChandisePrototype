@@ -13,6 +13,8 @@ import { Guid } from "guid-typescript";
 import { AuthService } from 'app/auth/auth.service';
 import { NodesService } from '../nodes/nodes.service';
 
+import { BitchandiseService } from 'app/shared/global-service/bitchandise.service';
+
 @Component({
   selector: 'app-update-item',
   templateUrl: './update-item.component.html',
@@ -48,7 +50,7 @@ export class UpdateItemComponent implements OnInit {
 
   scannerEnabled: boolean = false;
 
-  constructor(public itemService: ItemService, private nodesService: NodesService, private authService:AuthService) {
+  constructor(public itemService: ItemService, private nodesService: NodesService, private authService:AuthService, private bitchandise: BitchandiseService) {
   }
 
   private nodesSub: Subscription;
@@ -73,6 +75,7 @@ export class UpdateItemComponent implements OnInit {
   }
 
   public scanSuccessHandler($event: any) {
+    this.theRetrievedItem = null;
     this.scannerEnabled = false;
     this.theInfo =  $event;
     this.theItem = this.findItemIdScanner($event);
@@ -80,6 +83,7 @@ export class UpdateItemComponent implements OnInit {
   }
 
   public enableScanner() {
+    this.theRetrievedItem = null;
     this.scannerEnabled = !this.scannerEnabled;
     this.theInfo = "Place The QR Code Directly To Your Camera.";
   }
@@ -114,6 +118,16 @@ export class UpdateItemComponent implements OnInit {
       return this.theRetrievedItem;
     }else{
       console.log('Item Not Found');
+      var msg = "Item Does Not Exist";
+      let toastHTMLtemplate = `
+        <div class="container-fluid">
+          <span data-notify="icon" class="nc-icon nc-bell-55"></span>
+          <span data-notify="message">
+              ${msg}
+          </span>
+        </div>
+        `
+        this.bitchandise.notification(toastHTMLtemplate,"red",1000);
       this.theRetrievedItem = null;
       this.theInfo = "Sorry Try Again";
       this.enableScanner();
@@ -144,6 +158,16 @@ export class UpdateItemComponent implements OnInit {
       return this.theRetrievedItem;
     }else{
       console.log('Item Not Found');
+      var msg = "Item Does Not Exist";
+      let toastHTMLtemplate = `
+        <div class="container-fluid">
+          <span data-notify="icon" class="nc-icon nc-bell-55"></span>
+          <span data-notify="message">
+              ${msg}
+          </span>
+        </div>
+        `
+        this.bitchandise.notification(toastHTMLtemplate,"red",1000);
       this.theRetrievedItem = null;
       this.theInfo = "Sorry Try Again";
       this.enableScanner();
@@ -159,7 +183,6 @@ export class UpdateItemComponent implements OnInit {
    async updateItem(formData: NgForm){
 
     var createdDate = new Date();
-    
     if(formData.invalid){
       return
     }

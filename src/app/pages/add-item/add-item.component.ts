@@ -13,6 +13,7 @@ import { Guid } from "guid-typescript";
 import { NodesService } from '../nodes/nodes.service';
 import { AuthService } from 'app/auth/auth.service';
 import { isNoSubstitutionTemplateLiteral } from 'typescript';
+import { BitchandiseService } from 'app/shared/global-service/bitchandise.service';
 
 @Component({
   selector: 'app-add-item',
@@ -39,7 +40,7 @@ export class AddItemComponent implements OnInit {
   public theItemId: Guid;
 
 
-  constructor(public itemService: ItemService, private nodesService: NodesService, private authService:AuthService) {
+  constructor(public itemService: ItemService, private nodesService: NodesService, private authService:AuthService, private bitchandise: BitchandiseService) {
     // const today = new Date();
     // const month = today.getMonth();
     // const year = today.getFullYear();
@@ -101,6 +102,16 @@ export class AddItemComponent implements OnInit {
     //console.log(newItem.createdDate.toLocaleString('default', { month: 'long' }));
     //console.log(newItem);
     await this.nodesService.addNewItem(newItem);
+    var msg = "New Item Has Been Added";
+      let toastHTMLtemplate = `
+        <div class="container-fluid">
+          <span data-notify="icon" class="nc-icon nc-bell-55"></span>
+          <span data-notify="message">
+              ${msg}
+          </span>
+        </div>
+        `
+        this.bitchandise.notification(toastHTMLtemplate,"green",1000);
     //this.nodesService.mining();
     //this.itemService.addItem(newItem);
     console.log(newItem);

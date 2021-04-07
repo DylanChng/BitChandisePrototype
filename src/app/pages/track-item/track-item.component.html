@@ -36,15 +36,17 @@
     </div>
   </div>
   
-  <div class="row" *ngIf="this.timelineList.length">
+  <div class="row" *ngIf="this.timelineList.length>0">
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">{{this.timelineList.itemId}}
         </div>
         <div class="card-body">
 
-
-          <table class="table" *ngIf="this.timelineList.length">
+          <div class="text-center"><h6>
+            {{this.timelineList[0].itemId}} by {{this.timelineList[0].madeBy}}
+          </h6></div>
+          <table class="table">
             <thead class="thead-dark">
               <tr>
                 <th scope="col">Timeline</th>
