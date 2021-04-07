@@ -10,7 +10,7 @@ import { MatSort } from '@angular/material/sort';
 import { Subscription } from 'rxjs';
 import { Guid } from "guid-typescript";
 
-import { AuthService } from 'app/auth/auth.service';
+//import { AuthService } from 'app/auth/auth.service';
 import { NodesService } from '../nodes/nodes.service';
 
 @Component({
@@ -27,6 +27,7 @@ export class TrackItemComponent implements OnInit {
   //declarations
   itemList = [];
   editedItemList = [];
+  timelineList = [];
   theNodeURL = "http://localhost:3001";
   theRetrievedItem;
 
@@ -43,7 +44,7 @@ export class TrackItemComponent implements OnInit {
 
   scannerEnabled: boolean = false;
 
-  constructor(public itemService: ItemService, private nodesService: NodesService, private authService:AuthService) { }
+  constructor(public itemService: ItemService, private nodesService: NodesService) { }
 
   private nodesSub: Subscription;
   nodesList: any = [];
@@ -53,11 +54,22 @@ export class TrackItemComponent implements OnInit {
   nodeData;
   nodeTransactions = [];
   ngOnInit(): void {
+    //initiation
+    this.nodesService.getAllNodes();
+    this.nodesSub = this.nodesService.getUpdatedNodeListObservable()
+      .subscribe(nodes => {
+        this.nodesList = nodes;
+      }, err => {
+        this.nodesList = [];
+      })
+    //initiate
+    this.retrieveAllItems();
   }
 
   public scanSuccessHandler($event: any) {
     this.scannerEnabled = false;
     this.theInfo =  $event;
+    this.theItem = this.findItemIdScanner($event);
 
   }
 
@@ -68,23 +80,25 @@ export class TrackItemComponent implements OnInit {
 
    //retrieve the specific item
    findItemId(formData: NgForm){
-    //console.log(formData.value);
     var i;
-    for(i=0; i<this.itemList.length; i++){
+    for(i=0; i<this.nodeTransactions.length; i++){
       //console.log(this.itemList[i]);
-      if(this.itemList[i].itemId == formData.value.theItemId){
-        this.editedItemList.push(this.itemList[i]);
+      if(this.nodeTransactions[i].itemId == formData.value.theItemId){
+        //if matched 
+        //add into the edit item array
+        this.editedItemList.push(this.nodeTransactions[i]);
       }
+      //console.log("Mathced Items",this.editedItemList);
     };
-     //after loop
+    //after loop
 
-     if(this.editedItemList.length > 0){
+    if(this.editedItemList.length > 0){
       //console.log(this.editedItemList);
-      var theLastIndex = this.editedItemList.length;
+      //var theLastIndex = this.editedItemList.length;
       this.theInfo = "Successfully Found The Item";
         //set the latest item to display
-        this.theRetrievedItem = this.editedItemList[theLastIndex - 1 ];
-        console.log("this is is!",this.theRetrievedItem[theLastIndex - 1]);
+        this.timelineList = this.editedItemList;
+        console.log("this is is!",this.timelineList);
         
       return this.theRetrievedItem;
     }else{
@@ -97,12 +111,12 @@ export class TrackItemComponent implements OnInit {
 
   findItemIdScanner(item: String){
     var i;
-    for(i=0; i<this.itemList.length; i++){
+    for(i=0; i<this.nodeTransactions.length; i++){
       //console.log(this.itemList[i]);
-      if(this.itemList[i].itemId == item){
+      if(this.nodeTransactions[i].itemId == item){
         //if matched 
         //add into the edit item array
-        this.editedItemList.push(this.itemList[i]);
+        this.editedItemList.push(this.nodeTransactions[i]);
       }
       //console.log("Mathced Items",this.editedItemList);
     };
@@ -110,11 +124,11 @@ export class TrackItemComponent implements OnInit {
 
     if(this.editedItemList.length > 0){
       //console.log(this.editedItemList);
-      var theLastIndex = this.editedItemList.length;
+      //var theLastIndex = this.editedItemList.length;
       this.theInfo = "Successfully Found The Item";
         //set the latest item to display
-        this.theRetrievedItem = this.editedItemList[theLastIndex - 1 ];
-        console.log("this is is!",this.theRetrievedItem[theLastIndex - 1]);
+        this.timelineList = this.editedItemList;
+        console.log("this is is!",this.timelineList);
         
       return this.theRetrievedItem;
     }else{
@@ -126,33 +140,22 @@ export class TrackItemComponent implements OnInit {
   }
 
   //extraction
-  extractMyTransactions(theCurrUser){
+  extractAllTransactions(){
     this.nodeData.chain.forEach(block => {
       this.nodeTransactions.push(...block.transactions);
     });
-    console.log("nodetran", this.nodeTransactions);
-    var i;
-    for(i=0; i<this.nodeTransactions.length; i++){
-      //console.log(theCurrUser);
-      //console.log(this.nodeTransactions[i].madeBy);
-      if(this.nodeTransactions[i].madeBy == theCurrUser){
-        //my item only list
-        this.itemList.push(this.nodeTransactions[i]);
-      }
-    };
-    //console.log(this.nodeTransactions);
-    //console.log(this.itemList);
+    console.log("all trans", this.nodeTransactions);
   }
 
   //retrieve my items
-  retrieveMyItems(){
+  retrieveAllItems(){
     this.nodesService.getNodeData(this.theNodeURL);
     this.nodeDataSub = this.nodesService.getNodeDataListener()
       .subscribe(nodeData => {
         //console.log(nodeData);
         this.nodeData = nodeData;
         this.nodeTransactions = [];
-        this.extractMyTransactions(this.authService.getCurrentUser().name);
+        this.extractAllTransactions();
       })
   }
 

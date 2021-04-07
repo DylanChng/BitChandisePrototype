@@ -34,6 +34,7 @@ export class UpdateItemComponent implements OnInit {
   colDate = new FormControl();
   theRetrievedItem;
 
+
   //form 
   // formDescription = new FormControl('');
   // formComment = new FormControl('');
@@ -156,6 +157,9 @@ export class UpdateItemComponent implements OnInit {
 
    //methods
    async updateItem(formData: NgForm){
+
+    var createdDate = new Date();
+    
     if(formData.invalid){
       return
     }
@@ -167,7 +171,7 @@ export class UpdateItemComponent implements OnInit {
       comment: this.theRetrievedItem.comment,
       location: formData.value.location,
       expiryDate: this.theRetrievedItem.expiryDate,
-      createdDate: this.theRetrievedItem.createdDate,
+      createdDate: createdDate,
       madeBy: this.theRetrievedItem.madeBy,
     };
 

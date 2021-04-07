@@ -72,5 +72,10 @@ export class AuthService {
 
   logout(){
     this.currentUser = null;
+
+      console.log('bye');
+        setTimeout(() => {
+          this.router.navigate(['/admin']);
+        }, 500);
   }
 }
