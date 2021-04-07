@@ -21,7 +21,7 @@
               </div>
               <div class="col-md-6">
                 <mat-form-field appearance="outline">
-                  <mat-label>Remarks</mat-label>
+                  <mat-label>Comments</mat-label>
                   <input matInput ngModel type="text" name="remark" placeholder="Remarks" required #remark="ngModel">
                 </mat-form-field>
   
@@ -48,6 +48,7 @@
 
           <mat-card-content>
             <div class="row">
+              <div class="col-md-3"></div>
               <div class="col-md-6">
                 <mat-label class="mr-3">Expiry Date</mat-label>
                 <mat-form-field class="datePickers" appearance="fill">
@@ -57,15 +58,7 @@
                   <mat-datepicker #picker1></mat-datepicker>
                 </mat-form-field>
               </div>
-              <div class="col-md-6">
-                <mat-label class="mr-3">Collection Date</mat-label>
-                <mat-form-field class="datePickers" color="" appearance="fill" >
-                  <mat-label></mat-label>
-                  <input matInput [formControl]="colDate" [matDatepicker]="picker2" [min]="minDate" required>
-                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                  <mat-datepicker #picker2></mat-datepicker>
-                </mat-form-field>
-              </div>
+              <div class="col-md-3"></div>
             </div>
           </mat-card-content> 
     
@@ -76,81 +69,4 @@
         </form>
       </mat-card>
 
-      <mat-divider class="content-divider"></mat-divider>
-
-      <mat-card class="mat-elevation-z8">
-        <mat-card-header>
-          <mat-card-title>Recently Added and Mined Transactions</mat-card-title>
-        </mat-card-header>
-        <div class="card-body">
-          <div class="table">
-          <p *ngIf="this.dataSource.filteredData.length == 0" style="text-align: center;">There Is No Item Added Yet</p>
-        <table class="table table-responsive" mat-table matSort [dataSource]="dataSource" id="itemTable" *ngIf="this.dataSource.filteredData.length > 0"> 
-          
-            <!--  ID Column -->
-            <ng-container matColumnDef="itemId">
-              <th mat-header-cell *matHeaderCellDef> Item ID </th>
-              <td mat-cell *matCellDef="let item"> {{item.itemId}} </td>
-            </ng-container>
-    
-            <!--Item name Column -->
-            <ng-container matColumnDef="itemName">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Item Name </th>
-              <td mat-cell *matCellDef="let item"> {{item.itemName}} </td>
-            </ng-container>
-    
-            <!--Item Description Column -->
-            <ng-container matColumnDef="description">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
-              <td mat-cell *matCellDef="let item"> {{item.description}} </td>
-            </ng-container>
-    
-            <!--Item Location Column -->
-            <ng-container matColumnDef="status">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Location </th>
-              <td mat-cell *matCellDef="let item"> {{item.location}} </td>
-            </ng-container>
-    
-             <!--Item status Column -->
-             <ng-container matColumnDef="remarks">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-              <td mat-cell *matCellDef="let item"> {{item.status}} </td>
-            </ng-container>
-    
-            <!--Item comment Column -->
-            <ng-container matColumnDef="location">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Comment </th>
-              <td mat-cell *matCellDef="let item"> {{item.comment}} </td>
-            </ng-container>
-    
-            <!--Expiry date Column -->
-            <ng-container matColumnDef="expiryDate">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Expiry Date </th>
-              <td mat-cell *matCellDef="let item"> 
-                {{item.expiryDate}}</td>
-            </ng-container>
-    
-             <!--Collection date Column -->
-             <ng-container matColumnDef="collectionDate">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Collection Date </th>
-              <td mat-cell *matCellDef="let item"> 
-                {{item.collectionDate}}</td>
-            </ng-container>
-    
-            <!--Item location Column -->
-            <ng-container matColumnDef="manufacturer">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Manufacturer Company </th>
-              <td mat-cell *matCellDef="let item"> {{item.madeBy}} </td>
-            </ng-container>
-    
-            <tr mat-header-row *matHeaderRowDef="columnName"></tr>
-            <tr mat-row *matRowDef="let row; columns: columnName;"></tr>
-          </table>
-          <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
-        </div>
-        </div>
-      </mat-card>
-   
-    
-
-   
+     

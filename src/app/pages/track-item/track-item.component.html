@@ -9,32 +9,19 @@
               <div class="col-md-4"></div>
               <div class="col-md-4">
                 <div class="form-group">
-                  <h5 class="text-center">Track The Item With Item ID</h5>
+                  <h6 class="text-center">Track The Item With Item ID</h6>
                   <input type="text" class="form-control" placeholder="">
                 </div>
-                <button class="btn btn-primary btn-block mb-5">Track Now</button>
+                <button class="btn btn-primary btn-block mb-2">Track Now</button>
               </div>
-              <div class="col-md-4"></div>
             </div>
           </form>
-  
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card ">
-        <div class="card-header ">
-        </div>
-        <div class="card-body">
           <form>
-            <div class="row">
+            <div class="row mt-0">
               <div class="col-md-4"></div>
               <div class="col-md-4 text-center">
                 <p class="text-center">or</p>
-                <h5 class="text-center">Track The Item With QR Code</h5>
+                <h6 class="text-center">Track The Item With QR Code</h6>
                 <zxing-scanner *ngIf="scannerEnabled" #scanner (scanSuccess)="scanSuccessHandler($event)"></zxing-scanner>
                 <button (click)="enableScanner()" *ngIf="!scannerEnabled" type="button" class="btn btn-warning btn-block">Track With QR Code</button>
                 <p>{{ theInfo }}</p>
@@ -85,4 +72,5 @@
       </div>
     </div>
   </div>
+
   

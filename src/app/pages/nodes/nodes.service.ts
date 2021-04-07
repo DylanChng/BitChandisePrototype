@@ -211,8 +211,7 @@ export class NodesService {
 
 
   //Dylan
-
-  //get all data based on manufacturer?????
+  //get all
   getAllMyData(nodeURL){    
     this.http.get(`${nodeURL}/blockchain`)
     .subscribe(response => {
@@ -232,7 +231,7 @@ export class NodesService {
       comment: item.comment,
       location: item.location,
       expiryDate: item.expiryDate,
-      collectionDate: item.collectionDate,
+      createdDate: item.createdDate,
       madeBy: item.madeBy,
     }
 

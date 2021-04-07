@@ -25,43 +25,56 @@ export class UpdateItemComponent implements OnInit {
   value = 'Techiediaries';
 
   //declarations
+  itemList = [];
+  editedItemList = [];
+  theNodeURL = "http://localhost:3001";
   minDate = new Date();
   maxDate = new Date();
   expDate = new FormControl();
   colDate = new FormControl();
-  //serializedDate = new FormControl((new Date()).toISOString());
+  theRetrievedItem;
 
-
-  itemList: Item[] = [];
+  //form 
+  // formDescription = new FormControl('');
+  // formComment = new FormControl('');
+  // formCollectionDate = new FormControl('');
   //subs
   //private itemSub: Subscription;
-
-  columnName: string[] = ['itemId', 'itemName', 'description','status',
-   'remarks', 'location','expiryDate', 'collectionDate', 'action'];
-  dataSource = new MatTableDataSource<Item>();
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-
-  public theItemId: Guid;
-
   //scanner 
+  
   theInfo:string = "";
+  theItem;
+
   scannerEnabled: boolean = false;
 
   constructor(public itemService: ItemService, private nodesService: NodesService, private authService:AuthService) {
   }
 
+  private nodesSub: Subscription;
+  nodesList: any = [];
+  //selectedNode;
+
+  private nodeDataSub: Subscription;
+  nodeData;
+  nodeTransactions = [];
   ngOnInit(): void {
-    this.itemList = this.itemService.getItems();
-      this.dataSource.data = this.itemList;
-      console.log(this.dataSource.data);
+      //initiation
+      this.nodesService.getAllNodes();
+      this.nodesSub = this.nodesService.getUpdatedNodeListObservable()
+        .subscribe(nodes => {
+          this.nodesList = nodes;
+        }, err => {
+          this.nodesList = [];
+        })
+      //initiate
+      this.retrieveMyItems();
 
   }
 
   public scanSuccessHandler($event: any) {
     this.scannerEnabled = false;
     this.theInfo =  $event;
+    this.theItem = this.findItemIdScanner($event);
 
   }
 
@@ -71,58 +84,136 @@ export class UpdateItemComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    // this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
   }
 
   //methods
-  recordNewItem(formData: NgForm){
+
+  //retrieve the specific item
+  findItemId(formData: NgForm){
+    //console.log(formData.value);
+    var i;
+    for(i=0; i<this.itemList.length; i++){
+      //console.log(this.itemList[i]);
+      if(this.itemList[i].itemId == formData.value.theItemId){
+        this.editedItemList.push(this.itemList[i]);
+      }
+    };
+     //after loop
+
+     if(this.editedItemList.length > 0){
+      //console.log(this.editedItemList);
+      var theLastIndex = this.editedItemList.length;
+      this.theInfo = "Successfully Found The Item";
+        //set the latest item to display
+        this.theRetrievedItem = this.editedItemList[theLastIndex - 1 ];
+        console.log("this is is!",this.theRetrievedItem[theLastIndex - 1]);
+        
+      return this.theRetrievedItem;
+    }else{
+      console.log('Item Not Found');
+      this.theRetrievedItem = null;
+      this.theInfo = "Sorry Try Again";
+      this.enableScanner();
+    }
+  }
+
+  findItemIdScanner(item: String){
+    var i;
+    for(i=0; i<this.itemList.length; i++){
+      //console.log(this.itemList[i]);
+      if(this.itemList[i].itemId == item){
+        //if matched 
+        //add into the edit item array
+        this.editedItemList.push(this.itemList[i]);
+      }
+      //console.log("Mathced Items",this.editedItemList);
+    };
+    //after loop
+
+    if(this.editedItemList.length > 0){
+      //console.log(this.editedItemList);
+      var theLastIndex = this.editedItemList.length;
+      this.theInfo = "Successfully Found The Item";
+        //set the latest item to display
+        this.theRetrievedItem = this.editedItemList[theLastIndex - 1 ];
+        console.log("this is is!",this.theRetrievedItem[theLastIndex - 1]);
+        
+      return this.theRetrievedItem;
+    }else{
+      console.log('Item Not Found');
+      this.theRetrievedItem = null;
+      this.theInfo = "Sorry Try Again";
+      this.enableScanner();
+    }
+  }
+
+  // populateForm(element: any){
+  //   this.formDescription.setValue(this.theRetrievedItem.description.toString());
+  //   this.formComment.setValue(this.theRetrievedItem.comment.toString());
+  // };
+
+   //methods
+   async updateItem(formData: NgForm){
     if(formData.invalid){
       return
     }
-    //generate UUID
-    this.theItemId = Guid.create();
-
-    // console.log(this.expDate.value.toISOString());
-    // console.log(this.colDate.value.toISOString());
-
-    // console.log(this.expDate.value.getDay());
-    // console.log(this.expDate.value.getMonth());
-    // console.log(this.expDate.value.getFullYear());
-
-    
-
     const newItem: Item = {
-      itemId: this.theItemId.toString(),
-      itemName: formData.value.itemName,
-      description: formData.value.description,
+      itemId: this.theRetrievedItem.itemId,
+      itemName: this.theRetrievedItem.itemName,
+      description: this.theRetrievedItem.description,
       status: formData.value.status,
-      comment: formData.value.comment,
+      comment: this.theRetrievedItem.comment,
       location: formData.value.location,
-      expiryDate: this.expDate.value,
-      collectionDate: this.colDate.value,
-      madeBy: this.authService.getCurrentUser().toString(),
+      expiryDate: this.theRetrievedItem.expiryDate,
+      createdDate: this.theRetrievedItem.createdDate,
+      madeBy: this.theRetrievedItem.madeBy,
     };
 
-
-    console.log(newItem.collectionDate.toLocaleString('default', { month: 'long' }));
-
-
-    this.itemService.addItem(newItem);
+    await this.nodesService.addNewItem(newItem);
+    //this.nodesService.mining();
+    //this.itemService.addItem(newItem);
     console.log(newItem);
-    alert("Added a New Item.");
-    //formData.resetForm();
-    this.refreshTable();
-
-  }
-
-  refreshTable(){
-    this.paginator._changePageSize(this.paginator.pageSize);
-    this.dataSource.paginator = this.paginator;
+    //alert("Added a New Item.");
+    formData.resetForm();
+    this.retrieveMyItems();
+    this.theRetrievedItem = null;
   }
 
   generateQR(itemId :Item){
     //<ngx-qrcode [qrc-value]="theItemId"> </ngx-qrcode>
+  }
+
+  //extraction
+  extractMyTransactions(theCurrUser){
+    this.nodeData.chain.forEach(block => {
+      this.nodeTransactions.push(...block.transactions);
+    });
+    console.log("nodetran", this.nodeTransactions);
+    var i;
+    for(i=0; i<this.nodeTransactions.length; i++){
+      //console.log(theCurrUser);
+      //console.log(this.nodeTransactions[i].madeBy);
+      if(this.nodeTransactions[i].madeBy == theCurrUser){
+        //my item only list
+        this.itemList.push(this.nodeTransactions[i]);
+      }
+    };
+    //console.log(this.nodeTransactions);
+    //console.log(this.itemList);
+  }
+
+  //retrieve my items
+  retrieveMyItems(){
+    this.nodesService.getNodeData(this.theNodeURL);
+    this.nodeDataSub = this.nodesService.getNodeDataListener()
+      .subscribe(nodeData => {
+        //console.log(nodeData);
+        this.nodeData = nodeData;
+        this.nodeTransactions = [];
+        this.extractMyTransactions(this.authService.getCurrentUser().name);
+      })
   }
 
 }

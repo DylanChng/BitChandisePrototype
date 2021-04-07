@@ -6,7 +6,7 @@ export interface Item {
     comment: string;
     location: string;
     expiryDate: Date;
-    collectionDate: Date;
+    createdDate: Date;
     madeBy: String;
   }
 

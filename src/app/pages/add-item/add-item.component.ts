@@ -21,12 +21,12 @@ import { isNoSubstitutionTemplateLiteral } from 'typescript';
 })
 export class AddItemComponent implements OnInit {
   //declarations
-  theNodeURL = "http://localhost:3001";
+  theNodeURL = "http://localhost:3002";
   minDate = new Date();
   maxDate = new Date();
   expDate = new FormControl();
-  colDate = new FormControl();
-  itemList: Item[] = [];
+  createdDate = new Date();
+  itemList = [];
   theStringId;
 
   columnName: string[] = ['itemId', 'itemName', 'description','status',
@@ -95,13 +95,11 @@ export class AddItemComponent implements OnInit {
       comment: formData.value.remark,
       location: formData.value.location,
       expiryDate: this.expDate.value,
-      collectionDate: this.colDate.value,
+      createdDate: this.createdDate,
       madeBy: this.authService.getCurrentUser().name,
     };
-
-
-    console.log(newItem.collectionDate.toLocaleString('default', { month: 'long' }));
-
+    //console.log(newItem.createdDate.toLocaleString('default', { month: 'long' }));
+    //console.log(newItem);
     await this.nodesService.addNewItem(newItem);
     //this.nodesService.mining();
     //this.itemService.addItem(newItem);
@@ -109,40 +107,48 @@ export class AddItemComponent implements OnInit {
     //alert("Added a New Item.");
     //formData.resetForm();
     this.retrieveMyItems();
-    this.refreshTable();
   }
 
-
-  refreshTable(){
-    this.paginator._changePageSize(this.paginator.pageSize);
-    this.dataSource.paginator = this.paginator;
-  }
+  // refreshTable(){
+  //   this.paginator._changePageSize(this.paginator.pageSize);
+  //   this.dataSource.paginator = this.paginator;
+  // }
 
   // generateQR(itemId :Item){
   //   <ngx-qrcode [qrc-value]="theItemId"> </ngx-qrcode>
   // }
 
   //extraction
-  extractTransactions(){
+  extractMyTransactions(theCurrUser){
     this.nodeData.chain.forEach(block => {
       this.nodeTransactions.push(...block.transactions);
-      //data source
-      this.dataSource.data = this.nodeTransactions;
-      //console.log(this.dataSource.data);
     });
+    console.log("All Trans", this.nodeTransactions);
+    var i;
+    for(i=0; i<this.nodeTransactions.length; i++){
+      console.log(theCurrUser);
+      console.log(this.nodeTransactions[i].madeBy);
+      if(this.nodeTransactions[i].madeBy == theCurrUser){
+        //my item only list
+        this.itemList.push(this.nodeTransactions[i]);
+      }
+    };
+    //console.log(this.nodeTransactions);
+    console.log("man trans",this.itemList);
+
+    this.dataSource.data = this.itemList;
+    console.log(this.dataSource.data);
   }
 
   //retrieve my items
   retrieveMyItems(){
-    // this.selectedNode = this.nodesList.filter((node) => node.nodeURL == event.value);
-    // this.selectedNode = this.selectedNode[0];
     this.nodesService.getNodeData(this.theNodeURL);
     this.nodeDataSub = this.nodesService.getNodeDataListener()
       .subscribe(nodeData => {
         //console.log(nodeData);
         this.nodeData = nodeData;
         this.nodeTransactions = [];
-        this.extractTransactions();
+        this.extractMyTransactions(this.authService.getCurrentUser().name);
       })
   }
 

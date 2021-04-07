@@ -6,32 +6,32 @@
         <mat-card-title>Find Item</mat-card-title>
       </mat-card-header>
       <div>
-        <form>
+        <form #trackForm="ngForm" (submit)="findItemId(trackForm)" id="" ngNativeValidate>
           <div class="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-4">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
               <div class="form-group">
                 <h5 class="text-center">Track The Item With Item ID</h5>
-                <input type="text" class="form-control" placeholder="">
+                <input matInput ngModel type="text" class="form-control" placeholder="" name="theItemId" required>
               </div>
-              <button class="btn btn-primary btn-block mb-5">Track Now</button>
+              <button class="btn btn-primary btn-block mb-5" type="submit">Track Now</button>
             </div>
-            <div class="col-md-4"></div>
+            <div class="col-md-1"></div>
           </div>
         </form>
       </div>
       <div>
         <form>
           <div class="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-4 text-center">
+            <div class="col-md-1"></div>
+            <div class="col-md-10 text-center">
               <p class="text-center">or</p>
               <h5 class="text-center">Track The Item With QR Code</h5>
               <zxing-scanner *ngIf="scannerEnabled" #scanner (scanSuccess)="scanSuccessHandler($event)"></zxing-scanner>
               <button (click)="enableScanner()" *ngIf="!scannerEnabled" type="button" class="btn btn-warning btn-block">Track With QR Code</button>
               <p>{{ theInfo }}</p>
             </div>
-            <div class="col-md-4"></div>
+            <div class="col-md-1"></div>
           </div>
         </form>
       </div>
@@ -42,73 +42,64 @@
   <!-- edit form -->
   
   <div class="col-md-7">
-    <mat-card class="mat-elevation-z8">
+    <div class="card text-white bg-primary col-mb-12 text-center" *ngIf="this.theRetrievedItem != null">
+      <div class="p-5">
+        <div class="card-title">Item ID: {{this.theRetrievedItem.itemId}}</div>
+        <div class="card-body">
+          <h5 class="card-text">Item Name: {{this.theRetrievedItem.itemName}}</h5>
+          <p class="card-text">Item Description: {{this.theRetrievedItem.description}}</p>
+          <p class="card-text">Item Comment: {{this.theRetrievedItem.comment}}</p>
+          <p class="card-text">Item Location: {{this.theRetrievedItem.location}}</p>
+          <p class="card-text">Item Status: {{this.theRetrievedItem.status}}</p>
+          <hr>
+          <div class="row">
+            <div class="col-md-6"><p class="card-text">expiryDate : {{this.theRetrievedItem.expiryDate | date:'MM/dd/yyyy'}}</p></div>
+            <div class="col-md-6"><p class="card-text">Collection Date : {{this.theRetrievedItem.collectionDate | date:'MM/dd/yyyy'}}</p></div>
+          </div>
+      </div>
+      </div>
+    </div>  
+
+    <mat-card class="mat-elevation-z8" *ngIf="this.theRetrievedItem != null">
       <mat-card-header>
-        <mat-card-title>New Item Entry Form</mat-card-title>
-
+        <mat-card-title>Update Item Form</mat-card-title>
       </mat-card-header>
-      <form #postForm="ngForm" (submit)="recordNewItem(postForm)" id="" ngNativeValidate>
+      <form #updateForm="ngForm" (submit)="updateItem(updateForm)" id="" ngNativeValidate>
         <mat-card-content layout-align="center">
-            <mat-form-field appearance="outline">
-              <mat-label>Item Name</mat-label>
-              <input matInput ngModel type="text" name="itemName" placeholder="Item Name" required #itemName="ngModel" minlength="4">
-              <mat-error *ngIf="itemName.invalid">Please enter an item name</mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Description</mat-label>
-              <input matInput ngModel type="text" name="description" placeholder="Description" required #description="ngModel" minlength="4">
-            </mat-form-field>
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <div class="m-2">
+                <mat-form-field appearance="outline">
+                  <mat-label>Location/Provenance</mat-label>
+                  <input matInput ngModel type="text" name="location" placeholder="Location" required #location="ngModel" minlength="4">
+                </mat-form-field>
+              </div>
+              <div class="m-2">
+                <mat-form-field appearance="fill">
+                  <mat-label>Status</mat-label>
+                  <select matNativeControl matInput ngModel name="status" #status="ngModel" required>
+                    <option value=""></option>
+                    <option value="completed">Completed</option>
+                    <option value="inprogress">In Progress</option>
+                  </select>
+                </mat-form-field>
+              </div>              
+            </div>
+          </div>
           </mat-card-content>
-
-          <mat-card-content>
-            <mat-form-field appearance="outline">
-              <mat-label>Remarks</mat-label>
-              <input matInput ngModel type="text" name="remark" placeholder="Remarks" required #remark="ngModel">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Location/Provenance</mat-label>
-              <input matInput ngModel type="text" name="location" placeholder="Location" required #location="ngModel" minlength="4">
-            </mat-form-field>
-          </mat-card-content>
-
-          <mat-card-content class="col-md-4">
-            <mat-form-field appearance="fill">
-              <mat-label>Status</mat-label>
-              <select matNativeControl matInput ngModel name="status" #status="ngModel" required>
-                <option value=""></option>
-                <option value="completed">Completed</option>
-                <option value="inprogress">In Progress</option>
-              </select>
-            </mat-form-field>
-          </mat-card-content>
-
-        <mat-card-content class="col-md-4">
-            <mat-label class="mr-3">Expiry Date</mat-label>
-            <mat-form-field class="datePickers" appearance="fill">
-              <mat-label></mat-label>
-              <input matInput [formControl]="expDate" [matDatepicker]="picker1" [min]="minDate" required>
-              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-              <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
-
-            <mat-label class="mr-3">Collection Date</mat-label>
-            <mat-form-field class="datePickers" color="" appearance="fill" >
-              <mat-label></mat-label>
-              <input matInput [formControl]="colDate" [matDatepicker]="picker2" [min]="minDate" required>
-              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-              <mat-datepicker #picker2></mat-datepicker>
-            </mat-form-field>
-        </mat-card-content> 
-  
 
         <mat-card-actions align="center">
-          <button mat-raised-button	color="primary" type="submit">Create</button>
+          <button mat-raised-button	color="primary" type="submit">Update</button>
         </mat-card-actions>
       </form>
     </mat-card>
-    
+
+    <div class="card text-white bg-primary col-mb-12 text-center" *ngIf="this.theRetrievedItem == null">
+      <div class="pt-2">
+        <div class="card-title">Find An Item Using QR Scanner or Entering Item ID</div>
+      </div>
+    </div> 
+
   </div>
   </div>
   
