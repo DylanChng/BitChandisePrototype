@@ -45,6 +45,10 @@ export class UpdateItemComponent implements OnInit {
 
   public theItemId: Guid;
 
+  //scanner 
+  theInfo:string = "";
+  scannerEnabled: boolean = false;
+
   constructor(public itemService: ItemService, private nodesService: NodesService, private authService:AuthService) {
   }
 
@@ -53,6 +57,17 @@ export class UpdateItemComponent implements OnInit {
       this.dataSource.data = this.itemList;
       console.log(this.dataSource.data);
 
+  }
+
+  public scanSuccessHandler($event: any) {
+    this.scannerEnabled = false;
+    this.theInfo =  $event;
+
+  }
+
+  public enableScanner() {
+    this.scannerEnabled = !this.scannerEnabled;
+    this.theInfo = "Place The QR Code Directly To Your Camera.";
   }
 
   ngAfterViewInit() {
