@@ -27,6 +27,11 @@ export class AuthService {
     return this.currentUser;
   }
 
+  logout(){
+    this.currentUser = null;
+    console.log('Bye');
+  }
+
   getAuthListener(){
     return this.authListener.asObservable();
   }
@@ -70,12 +75,4 @@ export class AuthService {
       
   }
 
-  logout(){
-    this.currentUser = null;
-
-      console.log('bye');
-        setTimeout(() => {
-          this.router.navigate(['/admin']);
-        }, 500);
-  }
 }
