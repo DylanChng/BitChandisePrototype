@@ -20,11 +20,6 @@ import { NodesService } from '../nodes/nodes.service';
   styleUrls: ['./track-item.component.css']
 })
 export class TrackItemComponent implements OnInit {
-  //QR related
-  title = 'app';
-  elementType = 'url';
-  value = 'Techiediaries';
-
   //declarations
   itemList = [];
   editedItemList = [];

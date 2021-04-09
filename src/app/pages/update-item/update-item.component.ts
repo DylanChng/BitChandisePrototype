@@ -99,6 +99,8 @@ export class UpdateItemComponent implements OnInit {
   findItemId(formData: NgForm){
     //console.log(formData.value);
     var i;
+    this.theRetrievedItem = null;
+    this.editedItemList = [];
     for(i=0; i<this.itemList.length; i++){
       //console.log(this.itemList[i]);
       if(this.itemList[i].itemId == formData.value.theItemId){
@@ -136,6 +138,8 @@ export class UpdateItemComponent implements OnInit {
 
   findItemIdScanner(item: String){
     var i;
+    this.theRetrievedItem = null;
+    this.editedItemList = [];
     for(i=0; i<this.itemList.length; i++){
       //console.log(this.itemList[i]);
       if(this.itemList[i].itemId == item){

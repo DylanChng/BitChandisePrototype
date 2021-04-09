@@ -53,9 +53,9 @@
                 <mat-label class="mr-3">Expiry Date</mat-label>
                 <mat-form-field class="datePickers" appearance="fill">
                   <mat-label></mat-label>
-                  <input matInput [formControl]="expDate" [matDatepicker]="picker1" [min]="minDate" required>
+                  <input matInput [formControl]="expDate" [matDatepicker]="picker1" [min]="minDate" disabled required>
                   <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                  <mat-datepicker #picker1></mat-datepicker>
+                  <mat-datepicker disabled=false #picker1></mat-datepicker>
                 </mat-form-field>
               </div>
               <div class="col-md-3"></div>
